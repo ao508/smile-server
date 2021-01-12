@@ -1,6 +1,8 @@
 package org.mskcc.cmo.metadb.persistence;
 
 import java.util.UUID;
+
+import org.mskcc.cmo.metadb.model.Sample;
 import org.mskcc.cmo.metadb.model.SampleManifestEntity;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
@@ -39,4 +41,9 @@ public interface SampleManifestRepository extends Neo4jRepository<SampleManifest
         + "RETURN sm"
     )
     SampleManifestEntity saveSampleManifest(@Param("sample") SampleManifestEntity sample);
+    
+    @Query("MATCH (sm:cmo_metadb_sample_metadata {uuid: $uuid})"
+            + "MATCH (sm)-[SP_TO_SP]->(s)"
+            + "RETURN s;" )
+    Sample findIgoId(@Param("uuid") UUID uuid);
 }

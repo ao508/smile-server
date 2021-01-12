@@ -2,10 +2,11 @@ package org.mskcc.cmo.metadb;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import org.mskcc.cmo.messaging.Gateway;
 import org.mskcc.cmo.metadb.model.CmoRequestEntity;
+import org.mskcc.cmo.metadb.model.PatientMetadata;
+import org.mskcc.cmo.metadb.model.Sample;
 import org.mskcc.cmo.metadb.model.SampleManifestEntity;
 import org.mskcc.cmo.metadb.service.CmoRequestService;
 import org.mskcc.cmo.metadb.service.MessageHandlingService;
@@ -16,7 +17,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 
-@EntityScan(basePackages = "org.mskcc.cmo.shared.neo4j")
+@EntityScan(basePackages = "org.mskcc.cmo.metadb.model")
 @EnableNeo4jRepositories(basePackages = "org.mskcc.cmo.metadb.persistence")
 @SpringBootApplication(scanBasePackages = {"org.mskcc.cmo.messaging", "org.mskcc.cmo.metadb.service"})
 public class MetadbApp implements CommandLineRunner {
@@ -41,7 +42,9 @@ public class MetadbApp implements CommandLineRunner {
             messagingGateway.connect();
             messageHandlingService.initialize(messagingGateway);
             System.out.println("Attempting to persist mock request data to neo4j..");
-            requestService.saveRequest(mockRequestData(args[0]));
+            CmoRequestEntity req = mockRequestData("divya");
+            requestService.saveRequest(req);
+            //System.out.println(requestService.retrieveSampleManifestList(req.getRequestId()));
             metadbAppClose.await();
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,19 +76,29 @@ public class MetadbApp implements CommandLineRunner {
 
     private CmoRequestEntity mockRequestData(String identifierValue) {
         CmoRequestEntity request = new CmoRequestEntity();
-        request.setRequestId("12345-" + identifierValue);
-        SampleManifestEntity s1 = new SampleManifestEntity();
-        s1.setUuid(UUID.randomUUID());
-        s1.setIgoId("123");
-        s1.setInvestigatorSampleId("999");
-        SampleManifestEntity s2 = new SampleManifestEntity();
-        s2.setUuid(UUID.randomUUID());
-        s2.setIgoId("456");
-        s2.setInvestigatorSampleId("000");
+        request.setRequestId("anothertest-" + identifierValue);
         List<SampleManifestEntity> sampleManifestList = new ArrayList<SampleManifestEntity>();
-        sampleManifestList.add(s1);
-        sampleManifestList.add(s2);
+        sampleManifestList.add(mockSampleData("added-sample-divya2"));
+        sampleManifestList.add(mockSampleData("added-sample-divya"));
+        sampleManifestList.add(mockSampleData("added-sample-divya1"));
+        //sampleManifestList.add(mockSampleData("added-sample-divya3"));
         request.setSampleManifestList(sampleManifestList);
         return request;
+    }
+    
+    private SampleManifestEntity mockSampleData(String igoId) {
+        SampleManifestEntity sample = new SampleManifestEntity();
+        Sample s = new Sample();
+        s.setSampleId(igoId);
+        s.setIdSource("igoId");
+        sample.setSampleIgoId(s);
+        Sample s2 = new Sample();
+        s2.setSampleId("12345");
+        s2.setIdSource("investigatorId");
+        sample.setSampleIinvestigatorId(s2);
+        PatientMetadata p = new PatientMetadata();
+        p.setInvestigatorPatientId("p_id");
+        sample.setPatient(p);
+        return sample;
     }
 }

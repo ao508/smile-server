@@ -18,7 +18,9 @@ public class SampleManifestEntity extends SampleManifest {
     @Convert(UuidStringConverter.class)
     private UUID uuid;
     @Relationship(type = "SP_TO_SP", direction = Relationship.INCOMING)
-    private List<Sample> sampleList;
+    private Sample sampleIgoId;
+    @Relationship(type = "SP_TO_SP", direction = Relationship.INCOMING)
+    private Sample sampleInvestigatorId;
     @Relationship(type = "PX_TO_SP", direction = Relationship.INCOMING)
     private PatientMetadata patient;
     @Relationship(type = "SAMPLE_MANIFEST", direction = Relationship.OUTGOING)
@@ -143,7 +145,7 @@ public class SampleManifestEntity extends SampleManifest {
             tubeId,
             cfDNA2dBarcode);
         this.uuid = uuid;
-        this.sampleList = sampleList;
+        //this.sampleList = sampleList;
         this.patient = patient;
     }
 
@@ -155,31 +157,26 @@ public class SampleManifestEntity extends SampleManifest {
         this.uuid = uuid;
     }
 
-    public List<Sample> getSampleList() {
-        return sampleList;
-    }
-
-    public void setSampleList(List<Sample> sampleList) {
-        this.sampleList = sampleList;
-    }
-
-    /**
-     * Add sample to array.
-     * @param sample
-     */
-    public void addSample(Sample sample) {
-        if (sampleList == null) {
-            sampleList = new ArrayList<>();
-        }
-        sampleList.add(sample);
-    }
-
     public PatientMetadata getPatient() {
         return patient;
     }
 
     public void setPatient(PatientMetadata patient) {
         this.patient = patient;
+    }
+    
+    public void setSampleIgoId(Sample s) {
+        this.sampleIgoId = s;
+    }
+    public void setSampleIinvestigatorId(Sample s) {
+        this.sampleInvestigatorId = s;  
+    }
+    
+    public Sample getSampleIgoId() {
+        return sampleIgoId;
+    }
+    public Sample getSampleIinvestigatorId() {
+        return sampleInvestigatorId;
     }
 
 }
