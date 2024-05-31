@@ -1,4 +1,4 @@
-package org.mskcc.smile.service.impl;
+package org.mskcc.smile.service.msg.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.nats.client.Message;
@@ -19,14 +19,14 @@ import org.mskcc.cmo.messaging.MessageConsumer;
 import org.mskcc.smile.model.SampleMetadata;
 import org.mskcc.smile.model.SmileSample;
 import org.mskcc.smile.service.CrdbMappingService;
-import org.mskcc.smile.service.RequestReplyHandlingService;
 import org.mskcc.smile.service.SmileSampleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.mskcc.smile.service.msg.RequestReplyMsgHandlingService;
 
 @Component
-public class RequestReplyHandlingServiceImpl implements RequestReplyHandlingService {
+public class RequestReplyMsgHandlingServiceImpl implements RequestReplyMsgHandlingService {
 
     @Value("${request_reply.patient_samples_topic}")
     private String PATIENT_SAMPLES_REQREPLY_TOPIC;
@@ -55,7 +55,7 @@ public class RequestReplyHandlingServiceImpl implements RequestReplyHandlingServ
     private static CountDownLatch crdbMappingHandlerShutdownLatch;
     private static Gateway messagingGateway;
 
-    private static final Log LOG = LogFactory.getLog(RequestReplyHandlingServiceImpl.class);
+    private static final Log LOG = LogFactory.getLog(RequestReplyMsgHandlingServiceImpl.class);
 
     private class ReplyInfo {
         String requestMessage;
@@ -205,7 +205,7 @@ public class RequestReplyHandlingServiceImpl implements RequestReplyHandlingServ
     }
 
     private void setupPatientSamplesHandler(Gateway gateway,
-            RequestReplyHandlingServiceImpl requestReplyHandlingServiceImpl)
+            RequestReplyMsgHandlingServiceImpl requestReplyHandlingServiceImpl)
             throws Exception {
         gateway.replySub(PATIENT_SAMPLES_REQREPLY_TOPIC, new MessageConsumer() {
             @Override
@@ -227,7 +227,7 @@ public class RequestReplyHandlingServiceImpl implements RequestReplyHandlingServ
     }
 
     private void setupCrdbMappingHandler(Gateway gateway,
-            RequestReplyHandlingServiceImpl requestReplyHandlingServiceImpl)
+            RequestReplyMsgHandlingServiceImpl requestReplyHandlingServiceImpl)
             throws Exception {
         gateway.replySub(CRDB_MAPPING_REQREPLY_TOPIC, new MessageConsumer() {
             @Override

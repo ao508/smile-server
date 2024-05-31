@@ -1,8 +1,8 @@
-package org.mskcc.smile.service;
+package org.mskcc.smile.service.msg;
 
 import org.mskcc.cmo.messaging.Gateway;
 
-public interface RequestReplyHandlingService {
+public interface RequestReplyMsgHandlingService {
     void initialize(Gateway gateway) throws Exception;
     void patientSamplesHandler(String patientId, String replyTo) throws Exception;
     void crdbMappingHandler(String inputId, String replyTo) throws Exception;

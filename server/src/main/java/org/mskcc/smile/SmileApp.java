@@ -4,11 +4,6 @@ import java.util.concurrent.CountDownLatch;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.mskcc.cmo.messaging.Gateway;
-import org.mskcc.smile.service.ClinicalMessageHandlingService;
-import org.mskcc.smile.service.CorrectCmoPatientHandlingService;
-import org.mskcc.smile.service.RequestReplyHandlingService;
-import org.mskcc.smile.service.ResearchMessageHandlingService;
-import org.mskcc.smile.service.TempoMessageHandlingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -26,6 +21,11 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import org.mskcc.smile.service.msg.ClinicalMsgHandlingService;
+import org.mskcc.smile.service.msg.CorrectCmoPatientMsgHandlingService;
+import org.mskcc.smile.service.msg.RequestReplyMsgHandlingService;
+import org.mskcc.smile.service.msg.ResearchMsgHandlingService;
+import org.mskcc.smile.service.msg.TempoMsgHandlingService;
 
 @EntityScan(basePackages = "org.mskcc.smile.model")
 @EnableNeo4jRepositories(basePackages = "org.mskcc.smile.persistence.neo4j")
@@ -42,19 +42,19 @@ public class SmileApp implements CommandLineRunner {
     private Gateway messagingGateway;
 
     @Autowired
-    private ResearchMessageHandlingService researchMessageHandlingService;
+    private ResearchMsgHandlingService researchMsgHandlingService;
     
     @Autowired
-    private ClinicalMessageHandlingService clinicalMessageHandlingService;
+    private ClinicalMsgHandlingService clinicalMsgHandlingService;
     
     @Autowired
-    private CorrectCmoPatientHandlingService correctCmoPatientHandlingService;
+    private CorrectCmoPatientMsgHandlingService correctCmoPatientMsgHandlingService;
 
     @Autowired
-    private TempoMessageHandlingService tempoMessageHandlingService;
+    private TempoMsgHandlingService tempoMsgHandlingService;
 
     @Autowired
-    private RequestReplyHandlingService requestReplyHandlingService;
+    private RequestReplyMsgHandlingService requestReplyMsgHandlingService;
 
     private Thread shutdownHook;
     final CountDownLatch smileAppClose = new CountDownLatch(1);
@@ -86,11 +86,11 @@ public class SmileApp implements CommandLineRunner {
         try {
             installShutdownHook();
             messagingGateway.connect();
-            requestReplyHandlingService.initialize(messagingGateway);
-            researchMessageHandlingService.initialize(messagingGateway);
-            clinicalMessageHandlingService.initialize(messagingGateway);
-            correctCmoPatientHandlingService.initialize(messagingGateway);
-            tempoMessageHandlingService.intialize(messagingGateway);
+            requestReplyMsgHandlingService.initialize(messagingGateway);
+            researchMsgHandlingService.initialize(messagingGateway);
+            clinicalMsgHandlingService.initialize(messagingGateway);
+            correctCmoPatientMsgHandlingService.initialize(messagingGateway);
+            tempoMsgHandlingService.intialize(messagingGateway);
             smileAppClose.await();
         } catch (Exception e) {
             LOG.error("Encountered error during initialization", e);
@@ -103,11 +103,11 @@ public class SmileApp implements CommandLineRunner {
                 public void run() {
                     System.err.printf("\nCaught CTRL-C, shutting down gracefully...\n");
                     try {
-                        requestReplyHandlingService.shutdown();
-                        researchMessageHandlingService.shutdown();
-                        clinicalMessageHandlingService.shutdown();
-                        correctCmoPatientHandlingService.shutdown();
-                        tempoMessageHandlingService.shutdown();
+                        requestReplyMsgHandlingService.shutdown();
+                        researchMsgHandlingService.shutdown();
+                        clinicalMsgHandlingService.shutdown();
+                        correctCmoPatientMsgHandlingService.shutdown();
+                        tempoMsgHandlingService.shutdown();
                         messagingGateway.shutdown();
                     } catch (Exception e) {
                         LOG.error("Encountered error during shutdown process", e);

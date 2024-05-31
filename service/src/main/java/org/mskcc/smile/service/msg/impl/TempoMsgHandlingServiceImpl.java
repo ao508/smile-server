@@ -1,4 +1,4 @@
-package org.mskcc.smile.service.impl;
+package org.mskcc.smile.service.msg.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.nats.client.Message;
@@ -31,19 +31,19 @@ import org.mskcc.smile.model.tempo.json.CohortCompleteJson;
 import org.mskcc.smile.model.tempo.json.SampleBillingJson;
 import org.mskcc.smile.service.CohortCompleteService;
 import org.mskcc.smile.service.SmileSampleService;
-import org.mskcc.smile.service.TempoMessageHandlingService;
 import org.mskcc.smile.service.TempoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.stereotype.Component;
+import org.mskcc.smile.service.msg.TempoMsgHandlingService;
 
 /**
  *
  * @author ochoaa
  */
 @Component
-public class TempoMessageHandlingServiceImpl implements TempoMessageHandlingService {
+public class TempoMsgHandlingServiceImpl implements TempoMsgHandlingService {
     @Value("${tempo.wes_bam_complete_topic}")
     private String TEMPO_WES_BAM_COMPLETE_TOPIC;
 
@@ -72,7 +72,7 @@ public class TempoMessageHandlingServiceImpl implements TempoMessageHandlingServ
     private CohortCompleteService cohortCompleteService;
 
     private static Gateway messagingGateway;
-    private static final Log LOG = LogFactory.getLog(TempoMessageHandlingServiceImpl.class);
+    private static final Log LOG = LogFactory.getLog(TempoMsgHandlingServiceImpl.class);
     private final ObjectMapper mapper = new ObjectMapper();
 
     private static boolean initialized = false;
@@ -456,7 +456,7 @@ public class TempoMessageHandlingServiceImpl implements TempoMessageHandlingServ
     }
 
     private void setupBamCompleteHandler(Gateway gateway,
-            TempoMessageHandlingService tempoMessageHandlingService) throws Exception {
+            TempoMsgHandlingService tempoMessageHandlingService) throws Exception {
         gateway.subscribe(TEMPO_WES_BAM_COMPLETE_TOPIC, Object.class, new MessageConsumer() {
             @Override
             public void onMessage(Message msg, Object message) {
@@ -480,7 +480,7 @@ public class TempoMessageHandlingServiceImpl implements TempoMessageHandlingServ
     }
 
     private void setupQcCompleteHandler(Gateway gateway,
-            TempoMessageHandlingService tempoMessageHandlingService) throws Exception {
+            TempoMsgHandlingService tempoMessageHandlingService) throws Exception {
         gateway.subscribe(TEMPO_WES_QC_COMPLETE_TOPIC, Object.class, new MessageConsumer() {
             @Override
             public void onMessage(Message msg, Object message) {
@@ -505,7 +505,7 @@ public class TempoMessageHandlingServiceImpl implements TempoMessageHandlingServ
     }
 
     private void setupMafCompleteHandler(Gateway gateway,
-            TempoMessageHandlingService tempoMessageHandlingService) throws Exception {
+            TempoMsgHandlingService tempoMessageHandlingService) throws Exception {
         gateway.subscribe(TEMPO_WES_MAF_COMPLETE_TOPIC, Object.class, new MessageConsumer() {
             @Override
             public void onMessage(Message msg, Object message) {
@@ -530,7 +530,7 @@ public class TempoMessageHandlingServiceImpl implements TempoMessageHandlingServ
     }
 
     private void setupCohortCompleteHandler(Gateway gateway,
-            TempoMessageHandlingService tempoMessageHandlingService) throws Exception {
+            TempoMsgHandlingService tempoMessageHandlingService) throws Exception {
         gateway.subscribe(TEMPO_WES_COHORT_COMPLETE_TOPIC, Object.class, new MessageConsumer() {
             @Override
             public void onMessage(Message msg, Object message) {
@@ -550,7 +550,7 @@ public class TempoMessageHandlingServiceImpl implements TempoMessageHandlingServ
     }
 
     private void setupSampleBillingHandler(Gateway gateway,
-            TempoMessageHandlingService tempoMessageHandlingService) throws Exception {
+            TempoMsgHandlingService tempoMessageHandlingService) throws Exception {
         gateway.subscribe(TEMPO_SAMPLE_BILLING_TOPIC, Object.class, new MessageConsumer() {
             @Override
             public void onMessage(Message msg, Object message) {

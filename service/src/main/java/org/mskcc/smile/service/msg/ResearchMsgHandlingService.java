@@ -1,11 +1,11 @@
-package org.mskcc.smile.service;
+package org.mskcc.smile.service.msg;
 
 import org.mskcc.cmo.messaging.Gateway;
 import org.mskcc.smile.model.RequestMetadata;
 import org.mskcc.smile.model.SampleMetadata;
 import org.mskcc.smile.model.SmileRequest;
 
-public interface ResearchMessageHandlingService {
+public interface ResearchMsgHandlingService {
     void initialize(Gateway gateway) throws Exception;
     void newRequestHandler(SmileRequest request) throws Exception;
     void promotedRequestHandler(SmileRequest request) throws Exception;

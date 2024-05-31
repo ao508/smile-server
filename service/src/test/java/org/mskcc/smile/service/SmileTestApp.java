@@ -5,16 +5,16 @@ import org.mskcc.cmo.messaging.utils.SSLUtils;
 import org.mskcc.smile.commons.JsonComparator;
 import org.mskcc.smile.commons.impl.JsonComparatorImpl;
 import org.mskcc.smile.persistence.jpa.CrdbRepository;
-import org.mskcc.smile.service.impl.ClinicalMessageHandlingServiceImpl;
+import org.mskcc.smile.service.msg.impl.ClinicalMsgHandlingServiceImpl;
 import org.mskcc.smile.service.impl.CohortCompleteServiceImpl;
-import org.mskcc.smile.service.impl.CorrectCmoPatientHandlingServiceImpl;
+import org.mskcc.smile.service.msg.impl.CorrectCmoPatientMsgHandlingServiceImpl;
 import org.mskcc.smile.service.impl.CrdbMappingServiceImpl;
 import org.mskcc.smile.service.impl.PatientServiceImpl;
-import org.mskcc.smile.service.impl.RequestReplyHandlingServiceImpl;
+import org.mskcc.smile.service.msg.impl.RequestReplyMsgHandlingServiceImpl;
 import org.mskcc.smile.service.impl.RequestServiceImpl;
-import org.mskcc.smile.service.impl.ResearchMessageHandlingServiceImpl;
+import org.mskcc.smile.service.msg.impl.ResearchMsgHandlingServiceImpl;
 import org.mskcc.smile.service.impl.SampleServiceImpl;
-import org.mskcc.smile.service.impl.TempoMessageHandlingServiceImpl;
+import org.mskcc.smile.service.msg.impl.TempoMsgHandlingServiceImpl;
 import org.mskcc.smile.service.impl.TempoServiceImpl;
 import org.mskcc.smile.service.util.RequestStatusLogger;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -78,18 +78,18 @@ public class SmileTestApp {
     public SSLUtils sslUtils;
 
     @MockBean
-    public ResearchMessageHandlingServiceImpl researchMessageHandlingService;
+    public ResearchMsgHandlingServiceImpl researchMsgHandlingService;
 
     @MockBean
-    public ClinicalMessageHandlingServiceImpl clinicalMessageHandlingService;
+    public ClinicalMsgHandlingServiceImpl clinicalMsgHandlingService;
 
     @MockBean
-    public CorrectCmoPatientHandlingServiceImpl patientCorrectionHandlingService;
+    public CorrectCmoPatientMsgHandlingServiceImpl patientCorrectionMsgHandlingService;
 
     @MockBean
-    public RequestReplyHandlingServiceImpl requestReplyHandlingService;
+    public RequestReplyMsgHandlingServiceImpl requestReplyMsgHandlingService;
 
     @MockBean
-    public TempoMessageHandlingServiceImpl tempoMessageHandlingService;
+    public TempoMsgHandlingServiceImpl tempoMsgHandlingService;
 
 }

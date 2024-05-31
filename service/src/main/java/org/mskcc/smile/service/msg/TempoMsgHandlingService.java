@@ -1,4 +1,4 @@
-package org.mskcc.smile.service;
+package org.mskcc.smile.service.msg;
 
 import java.util.Map;
 import org.mskcc.cmo.messaging.Gateway;
@@ -12,7 +12,7 @@ import org.mskcc.smile.model.tempo.json.SampleBillingJson;
  *
  * @author ochoaa
  */
-public interface TempoMessageHandlingService {
+public interface TempoMsgHandlingService {
     void intialize(Gateway gateway) throws Exception;
     void bamCompleteHandler(Map.Entry<String, BamComplete> bcEvent) throws Exception;
     void qcCompleteHandler(Map.Entry<String, QcComplete> bcEvent) throws Exception;

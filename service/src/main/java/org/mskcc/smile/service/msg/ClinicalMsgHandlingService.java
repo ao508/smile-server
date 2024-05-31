@@ -1,9 +1,9 @@
-package org.mskcc.smile.service;
+package org.mskcc.smile.service.msg;
 
 import org.mskcc.cmo.messaging.Gateway;
 import org.mskcc.smile.model.SmileSample;
 
-public interface ClinicalMessageHandlingService {
+public interface ClinicalMsgHandlingService {
     void initialize(Gateway gateway) throws Exception;
     void newClinicalSampleHandler(SmileSample smileSample) throws Exception;
     void clinicalSampleUpdateHandler(SmileSample smileSample) throws Exception;

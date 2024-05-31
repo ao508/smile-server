@@ -1,4 +1,4 @@
-package org.mskcc.smile.service.impl;
+package org.mskcc.smile.service.msg.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.nats.client.Message;
@@ -21,7 +21,6 @@ import org.mskcc.smile.model.RequestMetadata;
 import org.mskcc.smile.model.SampleMetadata;
 import org.mskcc.smile.model.SmileRequest;
 import org.mskcc.smile.model.SmileSample;
-import org.mskcc.smile.service.ResearchMessageHandlingService;
 import org.mskcc.smile.service.SmileRequestService;
 import org.mskcc.smile.service.SmileSampleService;
 import org.mskcc.smile.service.util.RequestDataFactory;
@@ -29,9 +28,10 @@ import org.mskcc.smile.service.util.SampleDataFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.mskcc.smile.service.msg.ResearchMsgHandlingService;
 
 @Component
-public class ResearchMessageHandlingServiceImpl implements ResearchMessageHandlingService {
+public class ResearchMsgHandlingServiceImpl implements ResearchMsgHandlingService {
     @Value("${igo.new_request_topic}")
     private String IGO_NEW_REQUEST_TOPIC;
 
@@ -72,7 +72,7 @@ public class ResearchMessageHandlingServiceImpl implements ResearchMessageHandli
     private SmileSampleService sampleService;
 
     private static Gateway messagingGateway;
-    private static final Log LOG = LogFactory.getLog(ResearchMessageHandlingServiceImpl.class);
+    private static final Log LOG = LogFactory.getLog(ResearchMsgHandlingServiceImpl.class);
     private final ObjectMapper mapper = new ObjectMapper();
 
     private static boolean initialized = false;
@@ -380,7 +380,7 @@ public class ResearchMessageHandlingServiceImpl implements ResearchMessageHandli
         researchSampleUpdatePhaser.arriveAndAwaitAdvance();
     }
 
-    private void setupIgoNewRequestHandler(Gateway gateway, ResearchMessageHandlingService
+    private void setupIgoNewRequestHandler(Gateway gateway, ResearchMsgHandlingService
             researchMessageHandlingService) throws Exception {
         gateway.subscribe(IGO_NEW_REQUEST_TOPIC, Object.class, new MessageConsumer() {
             public void onMessage(Message msg, Object message) {
@@ -399,7 +399,7 @@ public class ResearchMessageHandlingServiceImpl implements ResearchMessageHandli
         });
     }
 
-    private void setupIgoPromotedRequestHandler(Gateway gateway, ResearchMessageHandlingService
+    private void setupIgoPromotedRequestHandler(Gateway gateway, ResearchMsgHandlingService
             researchMessageHandlingService) throws Exception {
         gateway.subscribe(IGO_PROMOTED_REQUEST_TOPIC, Object.class, new MessageConsumer() {
             public void onMessage(Message msg, Object message) {
@@ -419,7 +419,7 @@ public class ResearchMessageHandlingServiceImpl implements ResearchMessageHandli
         });
     }
 
-    private void setupRequestUpdateHandler(Gateway gateway, ResearchMessageHandlingService
+    private void setupRequestUpdateHandler(Gateway gateway, ResearchMsgHandlingService
             researchMessageHandlingService) throws Exception {
         gateway.subscribe(IGO_REQUEST_UPDATE_TOPIC, Object.class, new MessageConsumer() {
             @Override
@@ -441,7 +441,7 @@ public class ResearchMessageHandlingServiceImpl implements ResearchMessageHandli
     }
 
     private void setupResearchSampleUpdateHandler(Gateway gateway,
-            ResearchMessageHandlingService researchMessageHandlingService)
+            ResearchMsgHandlingService researchMessageHandlingService)
             throws Exception {
         gateway.subscribe(IGO_SAMPLE_UPDATE_TOPIC, Object.class, new MessageConsumer() {
             @Override

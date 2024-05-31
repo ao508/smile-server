@@ -1,4 +1,4 @@
-package org.mskcc.smile.service.impl;
+package org.mskcc.smile.service.msg.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.nats.client.Message;
@@ -16,16 +16,16 @@ import org.mskcc.cmo.messaging.Gateway;
 import org.mskcc.cmo.messaging.MessageConsumer;
 import org.mskcc.smile.model.SmileSample;
 import org.mskcc.smile.model.dmp.DmpSampleMetadata;
-import org.mskcc.smile.service.ClinicalMessageHandlingService;
 import org.mskcc.smile.service.CrdbMappingService;
 import org.mskcc.smile.service.SmileSampleService;
 import org.mskcc.smile.service.util.SampleDataFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.mskcc.smile.service.msg.ClinicalMsgHandlingService;
 
 @Component
-public class ClinicalMessageHandlingServiceImpl implements ClinicalMessageHandlingService {
+public class ClinicalMsgHandlingServiceImpl implements ClinicalMsgHandlingService {
     @Value("${smile.dmp_new_sample_topic}")
     private String NEW_DMP_SAMPLE_TOPIC;
 
@@ -42,7 +42,7 @@ public class ClinicalMessageHandlingServiceImpl implements ClinicalMessageHandli
     private int NUM_NEW_REQUEST_HANDLERS;
 
     private static Gateway messagingGateway;
-    private static final Log LOG = LogFactory.getLog(ClinicalMessageHandlingServiceImpl.class);
+    private static final Log LOG = LogFactory.getLog(ClinicalMsgHandlingServiceImpl.class);
     private final ObjectMapper mapper = new ObjectMapper();
 
     private static boolean initialized = false;
@@ -231,7 +231,7 @@ public class ClinicalMessageHandlingServiceImpl implements ClinicalMessageHandli
         }
     }
 
-    private void setupNewClinicalSampleHandler(Gateway gateway, ClinicalMessageHandlingService
+    private void setupNewClinicalSampleHandler(Gateway gateway, ClinicalMsgHandlingService
             clinicalMessageHandlingService) throws Exception {
         gateway.subscribe(NEW_DMP_SAMPLE_TOPIC, Object.class, new MessageConsumer() {
             @Override
@@ -261,7 +261,7 @@ public class ClinicalMessageHandlingServiceImpl implements ClinicalMessageHandli
     }
 
     private void setupClinicalSampleUpdateHandler(Gateway gateway,
-            ClinicalMessageHandlingService clinicalMessageHandlingService) throws Exception {
+            ClinicalMsgHandlingService clinicalMessageHandlingService) throws Exception {
         gateway.subscribe(DMP_SAMPLE_UPDATE_TOPIC, Object.class, new MessageConsumer() {
             @Override
             public void onMessage(Message msg, Object message) {

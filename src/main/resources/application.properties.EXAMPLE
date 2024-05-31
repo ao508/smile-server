@@ -83,3 +83,9 @@ tempo.wes_qc_complete_topic=
 tempo.wes_maf_complete_topic=
 tempo.wes_cohort_complete_topic=
 tempo.sample_billing_topic=
+
+# label generator topics
+igo.cmo_label_generator_topic=
+igo.cmo_promoted_label_toic=
+igo.cmo_sample_label_update_topic=
+smile.sample_update_topic=

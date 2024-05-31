@@ -1,4 +1,4 @@
-package org.mskcc.smile.service.impl;
+package org.mskcc.smile.service.msg.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.nats.client.Message;
@@ -20,16 +20,16 @@ import org.mskcc.cmo.messaging.MessageConsumer;
 import org.mskcc.smile.model.SampleMetadata;
 import org.mskcc.smile.model.SmilePatient;
 import org.mskcc.smile.model.SmileSample;
-import org.mskcc.smile.service.CorrectCmoPatientHandlingService;
 import org.mskcc.smile.service.CrdbMappingService;
 import org.mskcc.smile.service.SmilePatientService;
 import org.mskcc.smile.service.SmileSampleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.mskcc.smile.service.msg.CorrectCmoPatientMsgHandlingService;
 
 @Component
-public class CorrectCmoPatientHandlingServiceImpl implements CorrectCmoPatientHandlingService {
+public class CorrectCmoPatientMsgHandlingServiceImpl implements CorrectCmoPatientMsgHandlingService {
     @Value("${smile.correct_cmoptid_topic}")
     private String CORRECT_CMOPTID_TOPIC;
 
@@ -52,7 +52,7 @@ public class CorrectCmoPatientHandlingServiceImpl implements CorrectCmoPatientHa
     private SmileSampleService sampleService;
 
     private static Gateway messagingGateway;
-    private static final Log LOG = LogFactory.getLog(CorrectCmoPatientHandlingServiceImpl.class);
+    private static final Log LOG = LogFactory.getLog(CorrectCmoPatientMsgHandlingServiceImpl.class);
     private final ObjectMapper mapper = new ObjectMapper();
 
     private static boolean initialized = false;
@@ -187,7 +187,7 @@ public class CorrectCmoPatientHandlingServiceImpl implements CorrectCmoPatientHa
     }
 
     private void setupCorrectCmoPatientIdHandler(Gateway gateway,
-            CorrectCmoPatientHandlingService correctCmoPatientHandlingService) throws Exception {
+            CorrectCmoPatientMsgHandlingService correctCmoPatientHandlingService) throws Exception {
         gateway.subscribe(CORRECT_CMOPTID_TOPIC, Object.class, new MessageConsumer() {
             @Override
             public void onMessage(Message msg, Object message) {
