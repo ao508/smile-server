@@ -19,7 +19,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.3.3.RELEASE</version>
+    <version>3.3.3</version>
   </parent>
 
   <repositories>
@@ -37,21 +37,21 @@
   </pluginRepositories>
 
   <properties>
-    <java.version>1.8</java.version>
-    <maven.compiler.version>1.8</maven.compiler.version>
+    <java.version>21</java.version>
+    <maven.compiler.version>21</maven.compiler.version>
     <spring.version>5.2.6.RELEASE</spring.version>
-    <spring.boot.version>2.3.3.RELEASE</spring.boot.version>
+    <spring.boot.version>3.3.3</spring.boot.version>
     <jackson.version>2.11.2</jackson.version>
-    <neo4j-ogm.version>3.2.14</neo4j-ogm.version>
-    <junitjupiter.version>5.3.2</junitjupiter.version>
-    <neo4j-java-driver.version>4.4.9</neo4j-java-driver.version>
-    <testcontainers.version>1.17.0</testcontainers.version>
+    <neo4j-ogm.version>4.0.11</neo4j-ogm.version>
+    <neo4j-java-driver.version>5.19.0</neo4j-java-driver.version>
+    <junitjupiter.version>5.5.2</junitjupiter.version>
+    <testcontainers.version>1.20.1</testcontainers.version>
     <!-- smile messaging and shared entities dependency versions -->
     <smile_messaging_java.group>com.github.mskcc</smile_messaging_java.group>
-    <smile_messaging_java.version>1.4.1.RELEASE</smile_messaging_java.version>
+    <smile_messaging_java.version>java-v19-beta-1</smile_messaging_java.version>
     <!-- smile commons centralized config properties -->
     <smile_commons.group>com.github.mskcc</smile_commons.group>
-    <smile_commons.version>1.4.1.RELEASE</smile_commons.version>
+    <smile_commons.version>java-v19-beta-8</smile_commons.version>
     <!-- smile expected schema version -->
     <smile.schema_version>v2.3</smile.schema_version>
   </properties>
@@ -85,13 +85,7 @@
     <!-- neo4j testing -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>${junitjupiter.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
+      <artifactId>junit-jupiter</artifactId>
       <version>${junitjupiter.version}</version>
       <scope>test</scope>
     </dependency>
@@ -128,6 +122,11 @@
       <artifactId>spring-boot-starter-data-jpa</artifactId>
       <version>${spring.boot.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-neo4j</artifactId>
+      <version>${spring.boot.version}</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -136,7 +135,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M3</version>
+        <version>3.5.0</version>
         <dependencies>
           <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -163,21 +162,21 @@
         </executions>
       </plugin>
       <!-- maven compiler plugin -->
-      <plugin>
+<!--      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.6.1</version>
+        <version>3.11.0</version>
         <configuration>
-          <source>${maven.compiler.version}</source>
-          <target>${maven.compiler.version}</target>
+          <source>21</source>
+          <target>21</target>
           <compilerArgument>-Xlint:deprecation</compilerArgument>
         </configuration>
-      </plugin>
+      </plugin>-->
       <!-- maven checkstyle plugin -->
-      <plugin>
+<!--      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.1.1</version>
+        <version>3.3.0</version>
         <dependencies>
           <dependency>
             <groupId>${smile_commons.group}</groupId>
@@ -203,7 +202,7 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
+      </plugin>-->
     </plugins>
   </build>
 </project>

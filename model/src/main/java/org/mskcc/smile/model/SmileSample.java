@@ -23,13 +23,13 @@ public class SmileSample implements Serializable {
     @Id @GeneratedValue(strategy = UuidStrategy.class)
     @Convert(UuidStringConverter.class)
     private UUID smileSampleId;
-    @Relationship(type = "IS_ALIAS", direction = Relationship.INCOMING)
+    @Relationship(type = "IS_ALIAS", direction = Relationship.Direction.INCOMING)
     private List<SampleAlias> sampleAliases;
-    @Relationship(type = "HAS_SAMPLE", direction = Relationship.INCOMING)
+    @Relationship(type = "HAS_SAMPLE", direction = Relationship.Direction.INCOMING)
     private SmilePatient patient;
-    @Relationship(type = "HAS_METADATA", direction = Relationship.OUTGOING)
+    @Relationship(type = "HAS_METADATA", direction = Relationship.Direction.OUTGOING)
     private List<SampleMetadata> sampleMetadataList;
-    @Relationship(type = "HAS_TEMPO", direction = Relationship.OUTGOING)
+    @Relationship(type = "HAS_TEMPO", direction = Relationship.Direction.OUTGOING)
     private Tempo tempo;
     private String sampleClass;
     private String sampleCategory;

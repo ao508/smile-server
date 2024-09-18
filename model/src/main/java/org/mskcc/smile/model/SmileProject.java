@@ -5,15 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.neo4j.ogm.annotation.Id;
+import org.neo4j.ogm.annotation.GeneratedValue;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
 
 @NodeEntity(label = "Project")
 public class SmileProject implements Serializable {
-    @Id
+    @Id @GeneratedValue
     private String igoProjectId;
     private String namespace;
-    @Relationship(type = "HAS_REQUEST", direction = Relationship.OUTGOING)
+    @Relationship(type = "HAS_REQUEST", direction = Relationship.Direction.OUTGOING)
     private List<SmileRequest> requestList;
 
     public SmileProject() {}
