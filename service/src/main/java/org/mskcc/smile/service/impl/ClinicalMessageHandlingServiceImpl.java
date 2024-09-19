@@ -26,19 +26,19 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ClinicalMessageHandlingServiceImpl implements ClinicalMessageHandlingService {
-    @Value("${smile.dmp_new_sample_topic}")
+    @Value("${smile.dmp_new_sample_topic:}")
     private String NEW_DMP_SAMPLE_TOPIC;
 
-    @Value("${smile.dmp_sample_update_topic}")
+    @Value("${smile.dmp_sample_update_topic:}")
     private String DMP_SAMPLE_UPDATE_TOPIC;
 
-    @Value("${consumers.dmp_new_sample_topic}")
+    @Value("${consumers.dmp_new_sample_topic:}")
     private String CONS_DMP_NEW_SAMPLE_TOPIC;
 
-    @Value("${consumers.dmp_sample_update_topic}")
+    @Value("${consumers.dmp_sample_update_topic:}")
     private String CONS_DMP_SAMPLE_UPDATE_TOPIC;
 
-    @Value("${num.new_request_handler_threads}")
+    @Value("${num.new_request_handler_threads:1}")
     private int NUM_NEW_REQUEST_HANDLERS;
 
     private static Gateway messagingGateway;

@@ -142,6 +142,13 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.5.0</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junitjupiter.version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
       <!-- generate maven.properties to enable property injection from pom -->
       <plugin>

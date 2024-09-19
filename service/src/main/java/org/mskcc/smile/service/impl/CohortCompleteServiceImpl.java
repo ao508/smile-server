@@ -39,6 +39,10 @@ public class CohortCompleteServiceImpl implements CohortCompleteService {
 
     private static final Log LOG = LogFactory.getLog(CohortCompleteServiceImpl.class);
 
+    public CohortCompleteServiceImpl(CohortCompleteRepository cohortCompleteRepository) {
+        this.cohortCompleteRepository = cohortCompleteRepository;
+    }
+
     @Override
     public Cohort saveCohort(Cohort cohort, Set<String> sampleIds) throws Exception {
         // persist new cohort complete event to the db

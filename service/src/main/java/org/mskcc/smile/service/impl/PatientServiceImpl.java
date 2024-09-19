@@ -16,6 +16,10 @@ public class PatientServiceImpl implements SmilePatientService {
     @Autowired
     private SmilePatientRepository patientRepository;
 
+    public PatientServiceImpl(SmilePatientRepository patientRepository) {
+        this.patientRepository = patientRepository;
+    }
+
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public SmilePatient savePatientMetadata(SmilePatient patient) {

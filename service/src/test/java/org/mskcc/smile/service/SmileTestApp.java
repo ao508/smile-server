@@ -5,6 +5,11 @@ import org.mskcc.cmo.messaging.utils.SSLUtils;
 import org.mskcc.smile.commons.JsonComparator;
 import org.mskcc.smile.commons.impl.JsonComparatorImpl;
 import org.mskcc.smile.persistence.jpa.CrdbRepository;
+import org.mskcc.smile.persistence.neo4j.CohortCompleteRepository;
+import org.mskcc.smile.persistence.neo4j.SmilePatientRepository;
+import org.mskcc.smile.persistence.neo4j.SmileRequestRepository;
+import org.mskcc.smile.persistence.neo4j.SmileSampleRepository;
+import org.mskcc.smile.persistence.neo4j.TempoRepository;
 import org.mskcc.smile.service.impl.ClinicalMessageHandlingServiceImpl;
 import org.mskcc.smile.service.impl.CohortCompleteServiceImpl;
 import org.mskcc.smile.service.impl.CorrectCmoPatientHandlingServiceImpl;
@@ -16,6 +21,7 @@ import org.mskcc.smile.service.impl.ResearchMessageHandlingServiceImpl;
 import org.mskcc.smile.service.impl.SampleServiceImpl;
 import org.mskcc.smile.service.impl.TempoMessageHandlingServiceImpl;
 import org.mskcc.smile.service.impl.TempoServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -31,19 +37,25 @@ import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 @EntityScan(basePackages = "org.mskcc.smile.model")
 @EnableNeo4jRepositories(basePackages = "org.mskcc.smile.persistence")
 public class SmileTestApp {
+    @MockBean
+    public TempoService tempoService;
+
+    @MockBean
+    public CohortCompleteService cohortCompleteService;
+
     @Bean
     public SmileRequestService requestService() {
-        return new RequestServiceImpl();
+        return new RequestServiceImpl(requestRepository);
     }
 
     @Bean
     public SmileSampleService sampleService() {
-        return new SampleServiceImpl();
+        return new SampleServiceImpl(sampleRepository);
     }
 
     @Bean
     public SmilePatientService patientService() {
-        return new PatientServiceImpl();
+        return new PatientServiceImpl(patientRepository);
     }
 
     @Bean
@@ -51,14 +63,29 @@ public class SmileTestApp {
         return new JsonComparatorImpl();
     }
 
+    @MockBean
+    public SmileRequestRepository requestRepository;
+
+    @MockBean
+    public SmileSampleRepository sampleRepository;
+
+    @MockBean
+    public SmilePatientRepository patientRepository;
+
+    @MockBean
+    public CohortCompleteRepository cohortCompleteRepository;
+
+    @MockBean
+    public TempoRepository tempoRepository;
+
     @Bean
     public TempoService tempoService() {
-        return new TempoServiceImpl();
+        return new TempoServiceImpl(tempoRepository);
     }
 
     @Bean
     public CohortCompleteService cohortCompleteService() {
-        return new CohortCompleteServiceImpl();
+        return new CohortCompleteServiceImpl(cohortCompleteRepository);
     }
 
     @MockBean

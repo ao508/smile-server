@@ -32,6 +32,10 @@ public class TempoServiceImpl implements TempoService {
     @Autowired
     private SmileRequestService requestService;
 
+    public TempoServiceImpl(TempoRepository tempoRepository) {
+        this.tempoRepository = tempoRepository;
+    }
+
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public Tempo saveTempoData(Tempo tempo) throws Exception {
