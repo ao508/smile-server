@@ -2,6 +2,7 @@ package org.mskcc.smile.service;
 
 import java.util.List;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mskcc.smile.model.SampleMetadata;
 import org.mskcc.smile.model.SmilePatient;
@@ -13,6 +14,9 @@ import org.mskcc.smile.persistence.neo4j.SmileSampleRepository;
 import org.mskcc.smile.service.util.RequestDataFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.neo4j.DataNeo4jTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -25,6 +29,7 @@ import org.testcontainers.utility.DockerImageName;
  *
  * @author ochoaa
  */
+//@SpringBootTest
 @Testcontainers
 @DataNeo4jTest
 @Import(MockDataUtils.class)
@@ -41,22 +46,33 @@ public class CorrectCmoPatientIdHandlerTest {
     @Autowired
     private SmilePatientService patientService;
 
+    @Autowired
+    private SmileRequestRepository requestRepository;
+
+
     @Container
     private static final Neo4jContainer<?> databaseServer = new Neo4jContainer<>(DockerImageName.parse("neo4j:5.19.0"))
-            .withEnv("NEO4J_dbms_security_procedures_unrestricted", "apoc.*,algo.*");
+            .withoutAuthentication()
+            .withEnv("NEO4J_dbms_security_procedures_unrestricted", "apoc.*,algo.*").withExposedPorts(7687);
 
-    @TestConfiguration
-    static class Config {
-        @Bean
-        public org.neo4j.ogm.config.Configuration configuration() {
-            return new org.neo4j.ogm.config.Configuration.Builder()
-                    .uri(databaseServer.getBoltUrl())
-                    .credentials("neo4j", databaseServer.getAdminPassword())
-                    .build();
-        }
+    @DynamicPropertySource
+    static void redisProperties(DynamicPropertyRegistry registry) {
+//        registry.add("spring.data.neo4j.username", () -> "neo4j");
+//        registry.add("spring.data.neo4j.password", () -> databaseServer.getAdminPassword());
+        registry.add("spring.data.neo4j.uri", () -> databaseServer.getBoltUrl());
     }
 
-    private final SmileRequestRepository requestRepository;
+//    @TestConfiguration
+//    static class Config {
+//        @Bean
+//        public org.neo4j.ogm.config.Configuration configuration() {
+//            return new org.neo4j.ogm.config.Configuration.Builder()
+//                    .uri(databaseServer.getBoltUrl())
+//                    .build();
+//        }
+//    }
+
+//    private final SmileRequestRepository requestRepository;
     private final SmileSampleRepository sampleRepository;
     private final SmilePatientRepository patientRepository;
 
@@ -69,7 +85,7 @@ public class CorrectCmoPatientIdHandlerTest {
     @Autowired
     public CorrectCmoPatientIdHandlerTest(SmileRequestRepository requestRepository,
             SmileSampleRepository sampleRepository, SmilePatientRepository patientRepository) {
-        this.requestRepository = requestRepository;
+//        this.requestRepository = requestRepository;
         this.sampleRepository = sampleRepository;
         this.patientRepository = patientRepository;
     }
@@ -81,6 +97,7 @@ public class CorrectCmoPatientIdHandlerTest {
      */
     @Autowired
     public void initializeMockDatabase() throws Exception {
+        databaseServer.start();
         // mock request id: MOCKREQUEST1_B
         MockJsonTestData request1Data = mockDataUtils.mockedRequestJsonDataMap
                 .get("mockIncomingRequest1JsonDataWith2T2N");
