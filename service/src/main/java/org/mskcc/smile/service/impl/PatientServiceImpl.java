@@ -1,7 +1,6 @@
 package org.mskcc.smile.service.impl;
 
 import java.util.List;
-import java.util.UUID;
 import org.mskcc.smile.model.PatientAlias;
 import org.mskcc.smile.model.SmilePatient;
 import org.mskcc.smile.persistence.neo4j.SmilePatientRepository;
@@ -35,7 +34,7 @@ public class PatientServiceImpl implements SmilePatientService {
     }
 
     @Override
-    public UUID getPatientIdBySample(UUID smileSampleId) {
+    public String getPatientIdBySample(String smileSampleId) {
         return patientRepository.findPatientIdBySample(smileSampleId);
     }
 

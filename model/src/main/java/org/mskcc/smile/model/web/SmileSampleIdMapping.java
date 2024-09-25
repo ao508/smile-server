@@ -10,7 +10,7 @@ import org.mskcc.smile.model.SampleMetadata;
  */
 public class SmileSampleIdMapping {
     // @Convert(UuidStringConverter.class)
-    private UUID smileSampleId;
+    private String smileSampleId;
     private String importDate;
     private String primaryId;
     private String cmoSampleName;
@@ -25,18 +25,18 @@ public class SmileSampleIdMapping {
      * @param smileSampleId
      * @param sampleMetadata
      */
-    public SmileSampleIdMapping(UUID smileSampleId, SampleMetadata sampleMetadata) {
+    public SmileSampleIdMapping(String smileSampleId, SampleMetadata sampleMetadata) {
         this.smileSampleId = smileSampleId;
         this.importDate = sampleMetadata.getImportDate();
         this.primaryId = sampleMetadata.getPrimaryId();
         this.cmoSampleName = sampleMetadata.getCmoSampleName();
     }
 
-    public UUID getSmileSampleId() {
+    public String getSmileSampleId() {
         return smileSampleId;
     }
 
-    public void setSmileSampleId(UUID smileSampleId) {
+    public void setSmileSampleId(String smileSampleId) {
         this.smileSampleId = smileSampleId;
     }
 

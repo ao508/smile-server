@@ -14,14 +14,14 @@ public interface SmileSampleService {
     List<SmileSample> getMatchedNormalsBySample(SmileSample smileSample)
             throws Exception;
     List<String> getPooledNormalsBySample(SmileSample smileSample) throws Exception;
-    SmileSample getSmileSample(UUID smileSampleId) throws Exception;
+    SmileSample getSmileSample(String smileSampleId) throws Exception;
     SmileSample getResearchSampleByRequestAndIgoId(String requestId, String igoId) throws Exception;
     List<SmileSample> getResearchSamplesByRequestId(String requestId) throws Exception;
     List<SampleMetadata> getResearchSampleMetadataHistoryByIgoId(String igoId) throws Exception;
     Boolean sampleHasMetadataUpdates(SampleMetadata existingSampleMetadata,
             SampleMetadata sampleMetadata, Boolean isResearchSample, Boolean fromLims)
             throws Exception;
-    PublishedSmileSample getPublishedSmileSample(UUID smileSampleId) throws Exception;
+    PublishedSmileSample getPublishedSmileSample(String smileSampleId) throws Exception;
     List<PublishedSmileSample> getPublishedSmileSamplesByCmoPatientId(String cmoPatientId)
             throws Exception;
     List<SmileSample> getSamplesByCmoPatientId(String cmoPatientId) throws Exception;
@@ -29,10 +29,10 @@ public interface SmileSampleService {
     SmileSample getClinicalSampleByDmpId(String dmpId) throws Exception;
     List<SmileSample> getSamplesByCategoryAndCmoPatientId(String cmoPatientId,
             String sampleCategory) throws Exception;
-    void updateSamplePatientRelationship(UUID smileSampleId, UUID smilePatientId);
+    void updateSamplePatientRelationship(String smileSampleId, String smilePatientId);
     List<SmileSampleIdMapping> getSamplesByDate(String inputDate);
     SmileSample getSampleByInputId(String inputId) throws Exception;
-    void createSampleRequestRelationship(UUID smileSampleId, UUID smileRequestId);
+    void createSampleRequestRelationship(String smileSampleId, String smileRequestId);
     Boolean sampleExistsByInputId(String primaryId);
     List<SmileSample> getSamplesByCohortId(String cohortId)throws Exception;
 }

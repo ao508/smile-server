@@ -12,7 +12,7 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import org.springframework.data.neo4j.core.support.UUIDStringGenerator;
 
-import jakarta.persistence.Convert;
+import javax.persistence.Convert;
 
 /**
  *
@@ -22,7 +22,7 @@ import jakarta.persistence.Convert;
 public class Tempo implements Serializable {
     @Id @GeneratedValue(UUIDStringGenerator.class)
     // @Convert(UuidStringConverter.class)
-    private UUID smileTempoId;
+    private String smileTempoId;
     private String custodianInformation;
     private String accessLevel;
     private Boolean billed;
@@ -43,11 +43,11 @@ public class Tempo implements Serializable {
         this.sample = sample;
     }
 
-    public UUID getSmileTempoId() {
+    public String getSmileTempoId() {
         return smileTempoId;
     }
 
-    public void setSmileTempoId(UUID smileTempoId) {
+    public void setSmileTempoId(String smileTempoId) {
         this.smileTempoId = smileTempoId;
     }
 

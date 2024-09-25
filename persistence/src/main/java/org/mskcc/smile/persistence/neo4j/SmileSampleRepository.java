@@ -17,10 +17,10 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository
-public interface SmileSampleRepository extends Neo4jRepository<SmileSample, UUID> {
+public interface SmileSampleRepository extends Neo4jRepository<SmileSample, String> {
     @Query("MATCH (s: Sample {smileSampleId: $smileSampleId}) "
             + "RETURN s")
-    SmileSample findSampleById(@Param("smileSampleId") UUID smileSampleId);
+    SmileSample findSampleById(@Param("smileSampleId") String smileSampleId);
 
     @Query("MATCH (sa: SampleAlias {value: $igoId, namespace: 'igoId'})"
         + "<-[:IS_ALIAS]-(s: Sample) "
@@ -39,12 +39,12 @@ public interface SmileSampleRepository extends Neo4jRepository<SmileSample, UUID
     @Query("MATCH (s: Sample {smileSampleId: $smileSampleId})"
             + "MATCH (s)<-[:IS_ALIAS]-(sa: SampleAlias)"
             + "RETURN sa")
-    List<SampleAlias> findAllSampleAliases(@Param("smileSampleId") UUID smileSampleId);
+    List<SampleAlias> findAllSampleAliases(@Param("smileSampleId") String smileSampleId);
 
     @Query("MATCH (s: Sample {smileSampleId: $smileSampleId})"
             + "MATCH (s)-[:HAS_METADATA]->(sm: SampleMetadata)"
             + "RETURN sm")
-    List<SampleMetadata> findAllSampleMetadataListBySampleId(@Param("smileSampleId") UUID smileSampleId);
+    List<SampleMetadata> findAllSampleMetadataListBySampleId(@Param("smileSampleId") String smileSampleId);
 
     @Query("MATCH (s: Sample {smileSampleId: $smileSample.smileSampleId})"
             + "MATCH (s)<-[:HAS_SAMPLE]-(p: Patient)"
@@ -88,16 +88,16 @@ public interface SmileSampleRepository extends Neo4jRepository<SmileSample, UUID
     @Query("MATCH (s: Sample {smileSampleId: $smileSampleId}) "
             + "MATCH (p: Patient {smilePatientId: $smilePatientId}) "
             + "MERGE (s)<-[:HAS_SAMPLE]-(p)")
-    void updateSamplePatientRelationship(@Param("smileSampleId") UUID smileSampleId,
-            @Param("smilePatientId") UUID smilePatientId);
+    void updateSamplePatientRelationship(@Param("smileSampleId") String smileSampleId,
+            @Param("smilePatientId") String smilePatientId);
 
     @Query("MATCH (s: Sample {sampleCategory: 'research'})-[:HAS_METADATA]->(sm: SampleMetadata) "
             + "WHERE sm.importDate >= $inputDate RETURN DISTINCT s.smileSampleId")
-    List<UUID> findSamplesByLatestImportDate(@Param("inputDate") String inputDate);
+    List<String> findSamplesByLatestImportDate(@Param("inputDate") String inputDate);
 
     @Query("MATCH (s: Sample {smileSampleId: $smileSampleId})-[:HAS_METADATA]->(sm: SampleMetadata) "
             + "RETURN sm ORDER BY sm.importDate DESC LIMIT 1")
-    SampleMetadata findLatestSampleMetadataBySmileId(@Param("smileSampleId") UUID smileSampleId);
+    SampleMetadata findLatestSampleMetadataBySmileId(@Param("smileSampleId") String smileSampleId);
 
     @Query("MATCH (sm:SampleMetadata)<-[:HAS_METADATA]-(s:Sample)<-[:IS_ALIAS]-(sa:SampleAlias) "
             + "WHERE sm.primaryId = $inputId "
@@ -111,14 +111,14 @@ public interface SmileSampleRepository extends Neo4jRepository<SmileSample, UUID
     @Query("MATCH (s: Sample {smileSampleId: $smileSampleId}) "
             + "MATCH (s)<-[r:HAS_SAMPLE]-(p: Patient {smilePatientId: $smilePatientId}) "
             + "DELETE r")
-    void removeSamplePatientRelationship(@Param("smileSampleId") UUID smileSampleId,
-            @Param("smilePatientId") UUID smilePatientId);
+    void removeSamplePatientRelationship(@Param("smileSampleId") String smileSampleId,
+            @Param("smilePatientId") String smilePatientId);
 
     @Query("MATCH (r:Request {smileRequestId: $smileRequestId}) "
             + "MATCH (s:Sample {smileSampleId: $smileSampleId}) "
             + "MERGE (r)-[:HAS_SAMPLE]->(s)")
-    void createSampleRequestRelationship(@Param("smileSampleId") UUID smileSampleId,
-            @Param("smileRequestId") UUID smileRequestId);
+    void createSampleRequestRelationship(@Param("smileSampleId") String smileSampleId,
+            @Param("smileRequestId") String smileRequestId);
 
     @Query("MATCH (sm: SampleMetadata)-[:HAS_STATUS]->(st: Status) "
         + "WHERE ID(sm) = $smId "
@@ -128,7 +128,7 @@ public interface SmileSampleRepository extends Neo4jRepository<SmileSample, UUID
     @Query("MATCH (s: Sample {smileSampleId: $smileSampleId}) "
             + "SET s.revisable = $revisable "
             + "RETURN s")
-    SmileSample updateRevisableBySampleId(@Param("smileSampleId") UUID smileSampleId,
+    SmileSample updateRevisableBySampleId(@Param("smileSampleId") String smileSampleId,
             @Param("revisable") Boolean revisable);
 
     @Query("MATCH (c: Cohort {cohortId: $cohortId})-[:HAS_COHORT_SAMPLE]->"

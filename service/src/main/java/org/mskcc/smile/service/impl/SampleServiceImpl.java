@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -68,7 +67,7 @@ public class SampleServiceImpl implements SmileSampleService {
         SmileSample existingSample =
                 sampleRepository.findSampleByPrimaryId(sample.getPrimarySampleAlias());
         if (existingSample == null) {
-            UUID newSampleId = sampleRepository.save(sample).getSmileSampleId();
+            String newSampleId = sampleRepository.save(sample).getSmileSampleId();
             sample.setSmileSampleId(newSampleId);
             toReturn = sample;
         } else {
@@ -311,7 +310,7 @@ public class SampleServiceImpl implements SmileSampleService {
     }
 
     @Override
-    public SmileSample getSmileSample(UUID smileSampleId) throws Exception {
+    public SmileSample getSmileSample(String smileSampleId) throws Exception {
         SmileSample sample = sampleRepository.findSampleById(smileSampleId);
         if (sample == null) {
             return null;
@@ -376,7 +375,7 @@ public class SampleServiceImpl implements SmileSampleService {
     }
 
     @Override
-    public PublishedSmileSample getPublishedSmileSample(UUID smileSampleId) throws Exception {
+    public PublishedSmileSample getPublishedSmileSample(String smileSampleId) throws Exception {
         SmileSample sample = getSmileSample(smileSampleId);
         return new PublishedSmileSample(sample);
     }
@@ -456,7 +455,7 @@ public class SampleServiceImpl implements SmileSampleService {
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
-    public void updateSamplePatientRelationship(UUID smileSampleId, UUID smilePatientId) {
+    public void updateSamplePatientRelationship(String smileSampleId, String smilePatientId) {
         sampleRepository.updateSamplePatientRelationship(smileSampleId, smilePatientId);
     }
 
@@ -466,12 +465,12 @@ public class SampleServiceImpl implements SmileSampleService {
             throw new RuntimeException("Start date " + importDate + " cannot be null or empty");
         }
         // return latest sample metadata for each sample uuid returned
-        List<UUID> sampleIds = sampleRepository.findSamplesByLatestImportDate(importDate);
+        List<String> sampleIds = sampleRepository.findSamplesByLatestImportDate(importDate);
         if (sampleIds == null) {
             return null;
         }
         List<SmileSampleIdMapping> sampleIdsList = new ArrayList<>();
-        for (UUID smileSampleId : sampleIds) {
+        for (String smileSampleId : sampleIds) {
             SampleMetadata sm = sampleRepository.findLatestSampleMetadataBySmileId(smileSampleId);
             sm.setStatus(sampleRepository.findStatusForSampleMetadataById(sm.getId()));
             sampleIdsList.add(new SmileSampleIdMapping(smileSampleId, sm));
@@ -489,7 +488,7 @@ public class SampleServiceImpl implements SmileSampleService {
     }
 
     @Override
-    public void createSampleRequestRelationship(UUID smileSampleId, UUID smileRequestId) {
+    public void createSampleRequestRelationship(String smileSampleId, String smileRequestId) {
         sampleRepository.createSampleRequestRelationship(smileSampleId, smileRequestId);
     }
 

@@ -12,7 +12,7 @@ import org.mskcc.smile.model.Status;
  */
 public class PublishedSmileRequest {
     // @Convert(UuidStringConverter.class)
-    private UUID smileRequestId;
+    private String smileRequestId;
     private String igoProjectId;
     private String igoRequestId;
     private String genePanel;
@@ -94,7 +94,7 @@ public class PublishedSmileRequest {
      * @param pooledNormals
      * @param samples
      */
-    public PublishedSmileRequest(UUID smileRequestId, String igoProjectId, String igoRequestId,
+    public PublishedSmileRequest(String smileRequestId, String igoProjectId, String igoRequestId,
             String genePanel, String projectManagerName, String piEmail, String labHeadName,
             String labHeadEmail, String investigatorName, String investigatorEmail, String dataAnalystName,
             String dataAnalystEmail, String otherContactEmails, String dataAccessEmails,
@@ -125,11 +125,11 @@ public class PublishedSmileRequest {
         this.samples = samples;
     }
 
-    public UUID getSmileRequestId() {
+    public String getSmileRequestId() {
         return smileRequestId;
     }
 
-    public void setSmileRequestId(UUID smileRequestId) {
+    public void setSmileRequestId(String smileRequestId) {
         this.smileRequestId = smileRequestId;
     }
 

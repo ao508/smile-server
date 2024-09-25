@@ -11,7 +11,7 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.data.neo4j.core.schema.Relationship;
 import org.springframework.data.neo4j.core.support.UUIDStringGenerator;
 
-import jakarta.persistence.Convert;
+import javax.persistence.Convert;
 
 /**
  *
@@ -22,7 +22,7 @@ import jakarta.persistence.Convert;
 public class SmilePatient implements Serializable {
     @Id @GeneratedValue(UUIDStringGenerator.class)
     // @Convert(UuidStringConverter.class)
-    private UUID smilePatientId;
+    private String smilePatientId;
     @Relationship(type = "HAS_SAMPLE", direction = Relationship.Direction.OUTGOING)
     private List<SmileSample> smileSampleList;
     @Relationship(type = "IS_ALIAS", direction = Relationship.Direction.INCOMING)
@@ -35,11 +35,11 @@ public class SmilePatient implements Serializable {
         patientAliases.add(new PatientAlias(aliasValue, aliasNamespace));
     }
 
-    public UUID getSmilePatientId() {
+    public String getSmilePatientId() {
         return smilePatientId;
     }
 
-    public void setSmilePatientId(UUID smilePatientId) {
+    public void setSmilePatientId(String smilePatientId) {
         this.smilePatientId = smilePatientId;
     }
 

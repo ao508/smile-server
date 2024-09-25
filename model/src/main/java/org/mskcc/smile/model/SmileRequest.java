@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import jakarta.persistence.Convert;
+import javax.persistence.Convert;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class SmileRequest implements Serializable {
 
     @Id @GeneratedValue(UUIDStringGenerator.class)
     // @Convert(UuidStringConverter.class)
-    private UUID smileRequestId;
+    private String smileRequestId;
     @Relationship(type = "HAS_SAMPLE", direction = Relationship.Direction.OUTGOING)
     private List<SmileSample> smileSampleList;
     @Relationship(type = "HAS_REQUEST", direction = Relationship.Direction.INCOMING)
@@ -111,11 +111,11 @@ public class SmileRequest implements Serializable {
         this.requestJson = mapper.writeValueAsString(igoRequest);
     }
 
-    public UUID getSmileRequestId() {
+    public String getSmileRequestId() {
         return smileRequestId;
     }
 
-    public void setSmileRequestId(UUID smileRequestId) {
+    public void setSmileRequestId(String smileRequestId) {
         this.smileRequestId = smileRequestId;
     }
 

@@ -1,7 +1,6 @@
 package org.mskcc.smile.persistence.neo4j;
 
 import java.util.List;
-import java.util.UUID;
 import org.mskcc.smile.model.tempo.BamComplete;
 import org.mskcc.smile.model.tempo.MafComplete;
 import org.mskcc.smile.model.tempo.QcComplete;
@@ -17,10 +16,10 @@ import org.springframework.stereotype.Repository;
  * @author ochoaa
  */
 @Repository
-public interface TempoRepository extends Neo4jRepository<Tempo, UUID> {
+public interface TempoRepository extends Neo4jRepository<Tempo, String> {
     @Query("MATCH (s: Sample {smileSampleId: $smileSampleId})-[:HAS_TEMPO]->(t: Tempo) "
             + "RETURN t")
-    Tempo findTempoBySmileSampleId(@Param("smileSampleId") UUID smileSampleId);
+    Tempo findTempoBySmileSampleId(@Param("smileSampleId") String smileSampleId);
 
     @Query("MATCH (s: Sample)-[:HAS_METADATA]->(sm: SampleMetadata {primaryId: $primaryId}) "
             + "MATCH (s)-[:HAS_TEMPO]->(t:Tempo) RETURN t")
@@ -28,26 +27,26 @@ public interface TempoRepository extends Neo4jRepository<Tempo, UUID> {
 
     @Query("MATCH (t: Tempo) WHERE t.smileTempoId = $smileTempoId MATCH (t)-[:HAS_EVENT]->(bc: BamComplete) "
             + "RETURN bc")
-    List<BamComplete> findBamCompleteEventsByTempoId(@Param("smileTempoId") UUID smileTempoId);
+    List<BamComplete> findBamCompleteEventsByTempoId(@Param("smileTempoId") String smileTempoId);
 
     @Query("MATCH (t: Tempo) WHERE t.smileTempoId = $smileTempoId MATCH (t)-[:HAS_EVENT]->(qc: QcComplete) "
             + "RETURN qc")
-    List<QcComplete> findQcCompleteEventsByTempoId(@Param("smileTempoId") UUID smileTempoId);
+    List<QcComplete> findQcCompleteEventsByTempoId(@Param("smileTempoId") String smileTempoId);
     @Query("MATCH (t: Tempo) WHERE t.smileTempoId = $smileTempoId MATCH (t)-[:HAS_EVENT]->(mc: MafComplete) "
             + "RETURN mc")
-    List<MafComplete> findMafCompleteEventsByTempoId(@Param("smileTempoId") UUID smileTempoId);
+    List<MafComplete> findMafCompleteEventsByTempoId(@Param("smileTempoId") String smileTempoId);
 
     @Query("MATCH (t:Tempo) WHERE t.smileTempoId = $smileTempoId MATCH (t)-[:HAS_EVENT]->(bc: BamComplete) "
             + "RETURN bc ORDER BY bc.date DESC LIMIT 1")
-    BamComplete findLatestBamCompleteEventByTempoId(@Param("smileTempoId") UUID smileTempoId);
+    BamComplete findLatestBamCompleteEventByTempoId(@Param("smileTempoId") String smileTempoId);
 
     @Query("MATCH (t:Tempo) WHERE t.smileTempoId = $smileTempoId MATCH (t)-[:HAS_EVENT]->(mc: MafComplete) "
             + "RETURN mc ORDER BY mc.date DESC LIMIT 1")
-    MafComplete findLatestMafCompleteEventByTempoId(@Param("smileTempoId") UUID smileTempoId);
+    MafComplete findLatestMafCompleteEventByTempoId(@Param("smileTempoId") String smileTempoId);
 
     @Query("MATCH (t:Tempo) WHERE t.smileTempoId = $smileTempoId MATCH (t)-[:HAS_EVENT]->(qc: QcComplete) "
             + "RETURN qc ORDER BY qc.date DESC LIMIT 1")
-    QcComplete findLatestQcCompleteEventByTempoId(@Param("smileTempoId") UUID smileTempoId);
+    QcComplete findLatestQcCompleteEventByTempoId(@Param("smileTempoId") String smileTempoId);
 
     @Query("MATCH (s: Sample)-[:HAS_METADATA]->(sm: SampleMetadata {primaryId: $primaryId}) "
             + "MERGE (s)-[:HAS_TEMPO]->(t: Tempo) WITH s,t "

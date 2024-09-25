@@ -20,8 +20,8 @@ import org.mskcc.smile.model.igo.QcReport;
 
 public class PublishedSmileSample {
     // @Convert(UuidStringConverter.class)
-    private UUID smileSampleId;
-    private UUID smilePatientId;
+    private String smileSampleId;
+    private String smilePatientId;
     private String primaryId;
     private String cmoPatientId;
     private String cmoSampleName;
@@ -99,12 +99,11 @@ public class PublishedSmileSample {
         this.status = latestSampleMetadata.getStatus();
     }
 
-    public UUID getSmileSampleId() {
+    public String getSmileSampleId() {
         return smileSampleId;
-
     }
 
-    public void setSmileSampleId(UUID smileSampleId) {
+    public void setSmileSampleId(String smileSampleId) {
         this.smileSampleId = smileSampleId;
     }
 
@@ -218,11 +217,11 @@ public class PublishedSmileSample {
         this.cmoPatientId = cmoPatientId;
     }
 
-    public UUID getSmilePatientId() {
+    public String getSmilePatientId() {
         return smilePatientId;
     }
 
-    public void setSmilePatientId(UUID smilePatientId) {
+    public void setSmilePatientId(String smilePatientId) {
         this.smilePatientId = smilePatientId;
     }
 

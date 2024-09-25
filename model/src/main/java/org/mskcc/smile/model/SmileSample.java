@@ -2,7 +2,7 @@ package org.mskcc.smile.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import jakarta.persistence.Convert;
+import javax.persistence.Convert;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -23,7 +23,7 @@ import org.springframework.data.neo4j.core.support.UUIDStringGenerator;
 public class SmileSample implements Serializable {
     @Id @GeneratedValue(UUIDStringGenerator.class)
     // @Convert(UuidStringConverter.class)
-    private UUID smileSampleId;
+    private String smileSampleId;
     @Relationship(type = "IS_ALIAS", direction = Relationship.Direction.INCOMING)
     private List<SampleAlias> sampleAliases;
     @Relationship(type = "HAS_SAMPLE", direction = Relationship.Direction.INCOMING)
@@ -39,11 +39,11 @@ public class SmileSample implements Serializable {
 
     public SmileSample() {}
 
-    public UUID getSmileSampleId() {
+    public String getSmileSampleId() {
         return smileSampleId;
     }
 
-    public void setSmileSampleId(UUID smileSampleId) {
+    public void setSmileSampleId(String smileSampleId) {
         this.smileSampleId = smileSampleId;
     }
 
