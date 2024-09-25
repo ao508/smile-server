@@ -1,6 +1,8 @@
 # spring web server port
 server.port=
 
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+
 # nats server
 nats.consumer_name=
 nats.consumer_password=
