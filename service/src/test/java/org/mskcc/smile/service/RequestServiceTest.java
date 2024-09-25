@@ -44,16 +44,16 @@ public class RequestServiceTest {
     private static final Neo4jContainer<?> databaseServer = new Neo4jContainer<>()
             .withEnv("NEO4J_dbms_security_procedures_unrestricted", "apoc.*,algo.*");
 
-    @TestConfiguration
-    static class Config {
-        @Bean
-        public org.neo4j.ogm.config.Configuration configuration() {
-            return new org.neo4j.ogm.config.Configuration.Builder()
-                    .uri(databaseServer.getBoltUrl())
-                    .credentials("neo4j", databaseServer.getAdminPassword())
-                    .build();
-        }
-    }
+//     @TestConfiguration
+//     static class Config {
+//         @Bean
+//         public org.neo4j.ogm.config.Configuration configuration() {
+//             return new org.neo4j.ogm.config.Configuration.Builder()
+//                     .uri(databaseServer.getBoltUrl())
+//                     .credentials("neo4j", databaseServer.getAdminPassword())
+//                     .build();
+//         }
+//     }
 
     private final SmileRequestRepository requestRepository;
     private final SmileSampleRepository sampleRepository;

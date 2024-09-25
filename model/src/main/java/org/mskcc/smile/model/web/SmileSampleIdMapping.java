@@ -3,15 +3,13 @@ package org.mskcc.smile.model.web;
 import java.util.UUID;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.mskcc.smile.model.SampleMetadata;
-import org.neo4j.ogm.annotation.typeconversion.Convert;
-import org.neo4j.ogm.typeconversion.UuidStringConverter;
 
 /**
  *
  * @author ochoaa
  */
 public class SmileSampleIdMapping {
-    @Convert(UuidStringConverter.class)
+    // @Convert(UuidStringConverter.class)
     private UUID smileSampleId;
     private String importDate;
     private String primaryId;

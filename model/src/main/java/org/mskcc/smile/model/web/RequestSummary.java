@@ -3,15 +3,13 @@ package org.mskcc.smile.model.web;
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
-import org.neo4j.ogm.annotation.typeconversion.Convert;
-import org.neo4j.ogm.typeconversion.UuidStringConverter;
 
 /**
  *
  * @author ochoaa
  */
 public class RequestSummary implements Serializable {
-    @Convert(UuidStringConverter.class)
+    // @Convert(UuidStringConverter.class)
     private UUID smileRequestId;
     private String projectId;
     private String requestId;

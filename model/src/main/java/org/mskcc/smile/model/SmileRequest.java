@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.persistence.Convert;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,27 +16,25 @@ import java.util.Map;
 import java.util.UUID;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.mskcc.smile.model.igo.IgoRequest;
-import org.neo4j.ogm.annotation.GeneratedValue;
-import org.neo4j.ogm.annotation.Id;
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Relationship;
-import org.neo4j.ogm.annotation.typeconversion.Convert;
-import org.neo4j.ogm.id.UuidStrategy;
-import org.neo4j.ogm.typeconversion.UuidStringConverter;
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
+import org.springframework.data.neo4j.core.schema.Id;
+import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
+import org.springframework.data.neo4j.core.support.UUIDStringGenerator;
 
 /**
  *
  * @author ochoaa
  */
-@NodeEntity(label = "Request")
+@Node("Request")
 @JsonIgnoreProperties({"samples"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SmileRequest implements Serializable {
     @JsonIgnore
     private final ObjectMapper mapper = new ObjectMapper();
 
-    @Id @GeneratedValue(strategy = UuidStrategy.class)
-    @Convert(UuidStringConverter.class)
+    @Id @GeneratedValue(UUIDStringGenerator.class)
+    // @Convert(UuidStringConverter.class)
     private UUID smileRequestId;
     @Relationship(type = "HAS_SAMPLE", direction = Relationship.Direction.OUTGOING)
     private List<SmileSample> smileSampleList;

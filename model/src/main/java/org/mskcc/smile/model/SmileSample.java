@@ -1,6 +1,9 @@
 package org.mskcc.smile.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+
+import jakarta.persistence.Convert;
+
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -9,19 +12,17 @@ import java.util.List;
 import java.util.UUID;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.mskcc.smile.model.tempo.Tempo;
-import org.neo4j.ogm.annotation.GeneratedValue;
-import org.neo4j.ogm.annotation.Id;
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Relationship;
-import org.neo4j.ogm.annotation.typeconversion.Convert;
-import org.neo4j.ogm.id.UuidStrategy;
-import org.neo4j.ogm.typeconversion.UuidStringConverter;
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
+import org.springframework.data.neo4j.core.schema.Id;
+import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
+import org.springframework.data.neo4j.core.support.UUIDStringGenerator;
 
-@NodeEntity(label = "Sample")
+@Node("Sample")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SmileSample implements Serializable {
-    @Id @GeneratedValue(strategy = UuidStrategy.class)
-    @Convert(UuidStringConverter.class)
+    @Id @GeneratedValue(UUIDStringGenerator.class)
+    // @Convert(UuidStringConverter.class)
     private UUID smileSampleId;
     @Relationship(type = "IS_ALIAS", direction = Relationship.Direction.INCOMING)
     private List<SampleAlias> sampleAliases;

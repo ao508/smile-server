@@ -6,22 +6,22 @@ import java.util.List;
 import java.util.UUID;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.mskcc.smile.model.SmileSample;
-import org.neo4j.ogm.annotation.GeneratedValue;
-import org.neo4j.ogm.annotation.Id;
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Relationship;
-import org.neo4j.ogm.annotation.typeconversion.Convert;
-import org.neo4j.ogm.id.UuidStrategy;
-import org.neo4j.ogm.typeconversion.UuidStringConverter;
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
+import org.springframework.data.neo4j.core.schema.Id;
+import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
+import org.springframework.data.neo4j.core.support.UUIDStringGenerator;
+
+import jakarta.persistence.Convert;
 
 /**
  *
  * @author ochoaa
  */
-@NodeEntity
+@Node
 public class Tempo implements Serializable {
-    @Id @GeneratedValue(strategy = UuidStrategy.class)
-    @Convert(UuidStringConverter.class)
+    @Id @GeneratedValue(UUIDStringGenerator.class)
+    // @Convert(UuidStringConverter.class)
     private UUID smileTempoId;
     private String custodianInformation;
     private String accessLevel;

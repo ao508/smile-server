@@ -17,11 +17,9 @@ import org.mskcc.smile.model.converter.MapStringConverter;
 import org.mskcc.smile.model.converter.QcReportsStringConverter;
 import org.mskcc.smile.model.igo.Library;
 import org.mskcc.smile.model.igo.QcReport;
-import org.neo4j.ogm.annotation.typeconversion.Convert;
-import org.neo4j.ogm.typeconversion.UuidStringConverter;
 
 public class PublishedSmileSample {
-    @Convert(UuidStringConverter.class)
+    // @Convert(UuidStringConverter.class)
     private UUID smileSampleId;
     private UUID smilePatientId;
     private String primaryId;
@@ -48,11 +46,11 @@ public class PublishedSmileSample {
     private String datasource;
     private Boolean igoComplete;
     private Status status;
-    @Convert(MapStringConverter.class)
+    // @Convert(MapStringConverter.class)
     private Map<String, String> cmoSampleIdFields;
-    @Convert(QcReportsStringConverter.class)
+    // @Convert(QcReportsStringConverter.class)
     private List<QcReport> qcReports;
-    @Convert(LibrariesStringConverter.class)
+    // @Convert(LibrariesStringConverter.class)
     private List<Library> libraries;
     private List<SampleAlias> sampleAliases;
     private List<PatientAlias> patientAliases;

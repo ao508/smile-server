@@ -5,15 +5,13 @@ import java.util.UUID;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.mskcc.smile.model.SmileRequest;
 import org.mskcc.smile.model.Status;
-import org.neo4j.ogm.annotation.typeconversion.Convert;
-import org.neo4j.ogm.typeconversion.UuidStringConverter;
 
 /**
  *
  * @author ochoaa
  */
 public class PublishedSmileRequest {
-    @Convert(UuidStringConverter.class)
+    // @Convert(UuidStringConverter.class)
     private UUID smileRequestId;
     private String igoProjectId;
     private String igoRequestId;

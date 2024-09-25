@@ -17,15 +17,14 @@ import org.mskcc.smile.model.dmp.DmpSampleMetadata;
 import org.mskcc.smile.model.igo.IgoSampleManifest;
 import org.mskcc.smile.model.igo.Library;
 import org.mskcc.smile.model.igo.QcReport;
-import org.neo4j.ogm.annotation.GeneratedValue;
-import org.neo4j.ogm.annotation.Id;
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Relationship;
-import org.neo4j.ogm.annotation.typeconversion.Convert;
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
+import org.springframework.data.neo4j.core.schema.Id;
+import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@NodeEntity
+@Node
 public class SampleMetadata implements Serializable, Comparable<SampleMetadata>, Cloneable {
     @Id @GeneratedValue
     @JsonIgnore
@@ -53,13 +52,13 @@ public class SampleMetadata implements Serializable, Comparable<SampleMetadata>,
     private String genePanel;
     private String baitSet;
     private Boolean igoComplete;
-    @Convert(QcReportsStringConverter.class)
+    // @Convert(QcReportsStringConverter.class)
     private List<QcReport> qcReports;
-    @Convert(LibrariesStringConverter.class)
+    // @Convert(LibrariesStringConverter.class)
     private List<Library> libraries;
-    @Convert(MapStringConverter.class)
+    // @Convert(MapStringConverter.class)
     private Map<String, String> cmoSampleIdFields;
-    @Convert(MapStringConverter.class)
+    // @Convert(MapStringConverter.class)
     private Map<String, String> additionalProperties = new HashMap<>();
     @Relationship(type = "HAS_STATUS", direction = Relationship.Direction.OUTGOING)
     private Status status;

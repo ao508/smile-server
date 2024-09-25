@@ -2,15 +2,15 @@ package org.mskcc.smile.model.tempo;
 
 import java.io.Serializable;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.neo4j.ogm.annotation.GeneratedValue;
-import org.neo4j.ogm.annotation.Id;
-import org.neo4j.ogm.annotation.NodeEntity;
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
+import org.springframework.data.neo4j.core.schema.Id;
+import org.springframework.data.neo4j.core.schema.Node;
 
 /**
  * Represents a MAF Complete entity.
  * @author qu8n
  */
-@NodeEntity
+@Node
 public class MafComplete implements Serializable {
     @Id @GeneratedValue
     private Long id;

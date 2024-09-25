@@ -3,16 +3,16 @@ package org.mskcc.smile.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.neo4j.ogm.annotation.GeneratedValue;
-import org.neo4j.ogm.annotation.Id;
-import org.neo4j.ogm.annotation.NodeEntity;
-import org.neo4j.ogm.annotation.Relationship;
+import org.springframework.data.neo4j.core.schema.GeneratedValue;
+import org.springframework.data.neo4j.core.schema.Id;
+import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
 /**
  * Node entity representing the linked sample entity from an external system.
  * @author ochoaa
  */
 
-@NodeEntity
+@Node
 public class SampleAlias implements Serializable {
     @Id @GeneratedValue
     private Long id;
