@@ -48,6 +48,7 @@ public class PatientServiceTest {
     @Autowired
     private SmilePatientService patientService;
 
+    // required for all test classes
     @Container
     private static final Neo4jContainer<?> databaseServer = new Neo4jContainer<>(
             DockerImageName.parse("neo4j:5.19.0"))
@@ -89,6 +90,8 @@ public class PatientServiceTest {
      * @param requestRepository
      * @param sampleRepository
      * @param patientRepository
+     * @param tempoRepository
+     * @param cohortCompleteRepository
      */
     @Autowired
     public PatientServiceTest(SmileRequestRepository requestRepository,
