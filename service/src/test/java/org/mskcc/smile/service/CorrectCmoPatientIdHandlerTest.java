@@ -154,7 +154,6 @@ public class CorrectCmoPatientIdHandlerTest {
         Integer expectedSampleCount = samplesByNewCmoPatient.size() + 1;
         List<SmileSample> samplesByNewCmoPatientAfterSwap =
                 sampleService.getSamplesByCmoPatientId(newCmoPatientId);
-        Assertions.assertEquals(samplesByNewCmoPatientAfterSwap.size(),
-                expectedSampleCount);
+        Assertions.assertEquals(expectedSampleCount, samplesByNewCmoPatientAfterSwap.size());
     }
 }

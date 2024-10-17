@@ -88,8 +88,8 @@ public class CrdbMappingServiceTest {
      */
     @Test
     public void testCmoIdToCrdbModelMappingValues() throws Exception {
-        Assertions.assertEquals(
-                crdbMappingService.getCrdbMappingModelByInputId("C-XXA40X").getDmpId(), "P-0004000");
+        Assertions.assertEquals("P-0004000",
+                crdbMappingService.getCrdbMappingModelByInputId("C-XXA40X").getDmpId());
     }
 
     /**
@@ -98,7 +98,7 @@ public class CrdbMappingServiceTest {
      */
     @Test
     public void testDmpIdToCrdbModelMappingValues() throws Exception {
-        Assertions.assertEquals(
-                crdbMappingService.getCrdbMappingModelByInputId("P-0000222").getCmoId(), "C-FFX222");
+        Assertions.assertEquals("C-FFX222",
+                crdbMappingService.getCrdbMappingModelByInputId("P-0000222").getCmoId());
     }
 }

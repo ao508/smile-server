@@ -177,6 +177,6 @@ public class PatientServiceTest {
                 newCmoPatientId).size();
 
         Assertions.assertEquals(numOfSampleBeforeUpdate, numOfSampleAfterUpdate);
-        Assertions.assertNotEquals(numOfSampleAfterUpdate, 0);
+        Assertions.assertNotEquals(0, numOfSampleAfterUpdate);
     }
 }
