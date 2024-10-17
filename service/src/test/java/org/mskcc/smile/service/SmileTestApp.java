@@ -1,7 +1,7 @@
 package org.mskcc.smile.service;
 
-import io.nats.client.support.SSLUtils;
 import org.mskcc.cmo.messaging.Gateway;
+import org.mskcc.cmo.messaging.utils.SSLUtils;
 import org.mskcc.smile.commons.JsonComparator;
 import org.mskcc.smile.commons.impl.JsonComparatorImpl;
 import org.mskcc.smile.persistence.jpa.CrdbRepository;
@@ -21,17 +21,15 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
-import org.springframework.test.context.TestPropertySource;
 
 /**
  *
  * @author ochoaa
  */
-@EntityScan(basePackages = "org.mskcc.smile.model")
-@EnableNeo4jRepositories(basePackages = "org.mskcc.smile.persistence.neo4j")
 @SpringBootApplication(scanBasePackages = {"org.mskcc.cmo.messaging",
         "org.mskcc.smile.commons.*", "org.mskcc.smile.*"})
-@TestPropertySource(properties = {"spring.neo4j.authentication.username:neo4j", "nats.keystore_path:"})
+@EntityScan(basePackages = "org.mskcc.smile.model")
+@EnableNeo4jRepositories(basePackages = "org.mskcc.smile.persistence.neo4j")
 public class SmileTestApp {
     @Bean
     public SmileRequestService requestService() {
