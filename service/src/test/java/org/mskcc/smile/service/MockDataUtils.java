@@ -1,38 +1,48 @@
 package org.mskcc.smile.service;
 
-//import com.fasterxml.jackson.databind.ObjectMapper;
-//import java.io.BufferedReader;
-//import java.io.File;
-//import java.io.FileReader;
-//import java.io.IOException;
-//import java.util.ArrayList;
-//import java.util.Arrays;
-//import java.util.HashMap;
-//import java.util.List;
-//import java.util.Map;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.core.io.ClassPathResource;
-//import org.springframework.stereotype.Component;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
+import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  *
  * @author ochoaa
  */
-//@Component
-public final class MockDataUtils {
-//    private final ObjectMapper mapper = new ObjectMapper();
-//    // mocked data filepaths and resources
-//    private final String MOCKED_REQUEST_DATA_DETAILS_FILEPATH = "data/mocked_request_data_details.txt";
-//    private final String MOCKED_DMP_METADATA_DETAILS_FILEPATH
-//            = "data/dmp_clinical/mocked_dmp_data_details.txt";
-//    private final String MOCKED_DMP_PATIENT_MAPPING_FILEPATH
-//            = "data/dmp_clinical/mocked_dmp_patient_mappings.txt";
-//    private final String MOCKED_TEMPO_DATA_DETAILS_FILEPATH = "data/tempo/mocked_tempo_data_details.txt";
-//    private final String MOCKED_JSON_DATA_DIR = "data";
-//    private final ClassPathResource mockJsonTestDataResource = new ClassPathResource(MOCKED_JSON_DATA_DIR);
+@Component
+public class MockDataUtils {
+    private final ObjectMapper mapper = new ObjectMapper();
+    // mocked data filepaths and resources
+    private final String MOCKED_REQUEST_DATA_DETAILS_FILEPATH = "data/mocked_request_data_details.txt";
+    private final String MOCKED_DMP_METADATA_DETAILS_FILEPATH
+            = "data/dmp_clinical/mocked_dmp_data_details.txt";
+    private final String MOCKED_DMP_PATIENT_MAPPING_FILEPATH
+            = "data/dmp_clinical/mocked_dmp_patient_mappings.txt";
+    private final String MOCKED_TEMPO_DATA_DETAILS_FILEPATH = "data/tempo/mocked_tempo_data_details.txt";
+    private final String MOCKED_JSON_DATA_DIR = "data";
+    private final ClassPathResource mockJsonTestDataResource = new ClassPathResource(MOCKED_JSON_DATA_DIR);
+
+
+
+
+    public Map<String, MockJsonTestData> mockedRequestJsonDataMap;
+    
+    public MockDataUtils() {
+        this.mockedRequestJsonDataMap = mockedRequestJsonDataMap();
+    }
 //
 //    // mocked data maps
-//    public Map<String, MockJsonTestData> mockedRequestJsonDataMap;
 //    public Map<String, MockJsonTestData> mockedDmpMetadataMap;
 //    public Map<String, MockJsonTestData> mockedTempoDataMap;
 //    public Map<String, String> mockedDmpPatientMapping;
@@ -152,49 +162,52 @@ public final class MockDataUtils {
 //        return null;
 //    }
 //
-//    /**
-//     * Inits the mocked request json data map.
-//     * @throws IOException
-//     */
+    /**
+     * Inits the mocked request json data map.
+     * @throws IOException
+     */
 //    @Autowired
-//    public void mockedRequestJsonDataMap() {
-//        this.mockedRequestJsonDataMap = new HashMap<>();
-//        ClassPathResource jsonDataDetailsResource =
-//                new ClassPathResource(MOCKED_REQUEST_DATA_DETAILS_FILEPATH);
-//        try {
-//            BufferedReader reader = new BufferedReader(new FileReader(jsonDataDetailsResource.getFile()));
-//            List<String> columns = new ArrayList<>();
-//            String line;
-//            while ((line = reader.readLine()) != null) {
-//                String[] data = line.split("\t");
-//                if (columns.isEmpty()) {
-//                    columns = Arrays.asList(data);
-//                    continue;
-//                }
-//                String identifier = data[columns.indexOf("identifier")];
-//                String filepath = data[columns.indexOf("filepath")];
-//                String description = data[columns.indexOf("description")];
-//                mockedRequestJsonDataMap.put(identifier,
-//                        createMockJsonTestData(identifier, filepath, description));
-//            }
-//            reader.close();
-//        } catch (IOException e) {
-//            throw new RuntimeException("Error loading data from test file source", e);
-//        }
-//    }
-//
-//    private MockJsonTestData createMockJsonTestData(String identifier, String filepath,
-//            String description) throws IOException {
-//        String jsonString = loadMockRequestJsonTestData(filepath);
-//        return new MockJsonTestData(identifier, filepath, description, jsonString);
-//    }
-//
-//    private String loadMockRequestJsonTestData(String filepath) throws IOException {
-//        ClassPathResource res = new ClassPathResource(mockJsonTestDataResource.getPath()
-//                + File.separator + filepath);
-//        Map<String, Object> filedata = mapper.readValue(res.getFile(), Map.class);
-//        return mapper.writeValueAsString(filedata);
-//    }
+    public Map<String, MockJsonTestData> mockedRequestJsonDataMap() {
+        System.out.println("\n\n\nATTEMPTING TO INITIALIZE MOCKDATAUTILS REQUEST JSON DATA MAP\n\n\n");
+        
+        Map<String, MockJsonTestData> map = new HashMap<>();
+        ClassPathResource jsonDataDetailsResource =
+                new ClassPathResource(MOCKED_REQUEST_DATA_DETAILS_FILEPATH);
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(jsonDataDetailsResource.getFile()));
+            List<String> columns = new ArrayList<>();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split("\t");
+                if (columns.isEmpty()) {
+                    columns = Arrays.asList(data);
+                    continue;
+                }
+                String identifier = data[columns.indexOf("identifier")];
+                String filepath = data[columns.indexOf("filepath")];
+                String description = data[columns.indexOf("description")];
+                map.put(identifier,
+                        createMockJsonTestData(identifier, filepath, description));
+            }
+            reader.close();
+        } catch (IOException e) {
+            throw new RuntimeException("Error loading data from test file source", e);
+        }
+        return map;
+    }
+
+    private MockJsonTestData createMockJsonTestData(String identifier, String filepath,
+            String description) throws IOException {
+        String jsonString = loadMockRequestJsonTestData(filepath);
+        return new MockJsonTestData(identifier, filepath, description, jsonString);
+    }
+
+    private String loadMockRequestJsonTestData(String filepath) throws IOException {
+        ClassPathResource res = new ClassPathResource(mockJsonTestDataResource.getPath()
+                + File.separator + filepath);
+        Map<String, Object> filedata = mapper.readValue(res.getFile(), Map.class);
+        return mapper.writeValueAsString(filedata);
+    }
 //
 //    /**
 //     * Inits map of expected sample counts for each cmo patient id.
