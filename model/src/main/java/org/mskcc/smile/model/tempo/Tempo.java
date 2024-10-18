@@ -18,7 +18,7 @@ import org.neo4j.ogm.typeconversion.UuidStringConverter;
  *
  * @author ochoaa
  */
-@NodeEntity
+@NodeEntity(label = "Tempo")
 public class Tempo implements Serializable {
     @Id @GeneratedValue(strategy = UuidStrategy.class)
     @Convert(UuidStringConverter.class)

@@ -2,8 +2,10 @@ package org.mskcc.smile.service;
 
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.mskcc.smile.model.RequestMetadata;
 import org.mskcc.smile.model.SmileRequest;
 import org.mskcc.smile.model.SmileSample;
@@ -37,6 +39,7 @@ import org.testcontainers.utility.DockerImageName;
 )
 @Testcontainers
 @Import(MockDataUtils.class)
+@TestMethodOrder(OrderAnnotation.class)
 public class RequestServiceTest {
     @Autowired
     private MockDataUtils mockDataUtils;
