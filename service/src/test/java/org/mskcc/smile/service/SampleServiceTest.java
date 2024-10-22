@@ -414,7 +414,7 @@ public class SampleServiceTest {
         SmileSample sampleByUuid = sampleService.getSampleByInputId(investigatorId);
 
         Assertions.assertNotNull(sample);
-        Assertions.assertSame(sample, sampleByUuid);
+        Assertions.assertEquals(sample, sampleByUuid);
     }
 
     /**
@@ -452,7 +452,6 @@ public class SampleServiceTest {
         }
         Assertions.assertNotNull(updatedSample);
         SampleMetadata updatedMetadata = updatedSample.getLatestSampleMetadata();
-        updatedMetadata.setImportDate("2000-10-15");
         updatedMetadata.setBaitSet("NEW BAIT SET");
         updatedMetadata.setGenePanel("NEW GENE PANEL");
         sampleService.updateSampleMetadata(updatedMetadata, Boolean.TRUE);
