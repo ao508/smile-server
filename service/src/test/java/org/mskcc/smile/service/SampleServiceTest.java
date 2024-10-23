@@ -511,7 +511,6 @@ public class SampleServiceTest {
                 latestSampleMetadata.getCollectionYear());
     }
 
-
     /**
      * Tests if sampleMetadata with updates that includes a patient swap is being persisted correctly
      * @throws Exception
@@ -568,7 +567,6 @@ public class SampleServiceTest {
                 sampleService.getSamplesByCmoPatientId(currentCmoPtId);
         Assertions.assertEquals(samplesBeforeUpdateForCurrentPt.size() - 1,
                 samplesStillLinkedToOldPt.size());
-
     }
 
     /**
@@ -615,7 +613,6 @@ public class SampleServiceTest {
         newSampleMetadata.setCmoPatientId(sampleMetadata.getCmoPatientId());
 
         Boolean isUpdated = sampleService.updateSampleMetadata(newSampleMetadata, Boolean.FALSE);
-
         Assertions.assertFalse(isUpdated);
     }
 
