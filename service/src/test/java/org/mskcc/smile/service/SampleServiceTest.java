@@ -103,7 +103,6 @@ public class SampleServiceTest {
     private final TempoRepository tempoRepository;
     private final CohortCompleteRepository cohortCompleteRepository;
 
-
     /**
      * Initializes the Neo4j repositories.
      * @param requestRepository
@@ -141,7 +140,6 @@ public class SampleServiceTest {
             requestService.saveRequest(request1);
         }
 
-
         // mock request id: 33344_Z
         MockJsonTestData request3Data = mockDataUtils.mockedRequestJsonDataMap
                 .get("mockIncomingRequest3JsonDataPooledNormals");
@@ -173,7 +171,6 @@ public class SampleServiceTest {
             if (!sampleService.sampleExistsByInputId(clinicalSample.getPrimarySampleAlias())) {
                 sampleService.saveSmileSample(clinicalSample);
             }
-
         }
     }
 
@@ -284,7 +281,6 @@ public class SampleServiceTest {
         Boolean hasUpdates = sampleService.sampleHasMetadataUpdates(sample.getLatestSampleMetadata(),
                 updatedSample.getLatestSampleMetadata(), Boolean.TRUE, Boolean.FALSE);
         Assertions.assertTrue(hasUpdates);
-
     }
 
     /**
