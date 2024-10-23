@@ -245,7 +245,7 @@ public class SampleServiceTest {
     public void testGetAllSmileSamplesByRequestId() throws Exception {
         String requestId = "33344_Z";
         List<SmileSample> requestSamplesList =
-    sampleService.getResearchSamplesByRequestId(requestId);
+                sampleService.getResearchSamplesByRequestId(requestId);
         Assertions.assertEquals(4, requestSamplesList.size());
     }
 
@@ -311,18 +311,6 @@ public class SampleServiceTest {
         Assertions.assertEquals(2, sampleMetadataHistory.size());
     }
 
-//    /**
-//     * Tests if the returned list of sampleMetadata history is sorted based on importDate
-//     * @throws Exception
-//     */
-//    @Test
-//    public void testSampleHistoryListIsAscendingByImportDate() throws Exception {
-//        String igoId = "MOCKREQUEST1_B_4";
-//        List<SampleMetadata> sampleMetadataHistory = sampleService
-//                .getResearchSampleMetadataHistoryByIgoId(igoId);
-//        Assertions.assertarr(sampleMetadataHistory.).isSorted();
-//    }
-
     /**
      * Test if the persisted clinical sample is accurately mapped.
      * DMP patient 'P-0000001' is expected to only have 2 clinical samples
@@ -386,7 +374,8 @@ public class SampleServiceTest {
         SampleMetadata updatedSampleMetadataAfterUpdate = sampleService.getResearchSampleByRequestAndIgoId(
                 requestId, igoId).getLatestSampleMetadata();
         Assertions.assertNotEquals(importDate, updatedSampleMetadataAfterUpdate.getImportDate());
-        Assertions.assertEquals(sampleMetadata.getImportDate(), updatedSampleMetadataAfterUpdate.getImportDate());
+        Assertions.assertEquals(sampleMetadata.getImportDate(),
+                updatedSampleMetadataAfterUpdate.getImportDate());
     }
 
     /**
@@ -417,7 +406,8 @@ public class SampleServiceTest {
         SampleMetadata updatedSampleMetadataAfterSave = sampleService.getResearchSampleByRequestAndIgoId(
                 requestId, igoId).getLatestSampleMetadata();
         Assertions.assertNotEquals(importDate, updatedSampleMetadataAfterSave.getImportDate());
-        Assertions.assertEquals(sampleMetadata.getImportDate(), updatedSampleMetadataAfterSave.getImportDate());
+        Assertions.assertEquals(sampleMetadata.getImportDate(),
+                updatedSampleMetadataAfterSave.getImportDate());
     }
 
     /**
