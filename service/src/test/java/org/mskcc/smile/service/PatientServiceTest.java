@@ -11,6 +11,7 @@ import org.mskcc.smile.persistence.neo4j.SmileRequestRepository;
 import org.mskcc.smile.persistence.neo4j.SmileSampleRepository;
 import org.mskcc.smile.persistence.neo4j.TempoRepository;
 import org.mskcc.smile.service.util.RequestDataFactory;
+import org.neo4j.ogm.session.Session;
 import org.neo4j.ogm.session.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -78,6 +79,9 @@ public class PatientServiceTest {
         }
     }
 
+    @Autowired
+    private SessionFactory sessionFactory;
+
     private final SmileRequestRepository requestRepository;
     private final SmileSampleRepository sampleRepository;
     private final SmilePatientRepository patientRepository;
@@ -110,6 +114,9 @@ public class PatientServiceTest {
      */
     @Autowired
     public void initializeMockDatabase() throws Exception {
+        Session session = sessionFactory.openSession();
+        session.purgeDatabase();
+
         // mock request id: MOCKREQUEST1_B
         MockJsonTestData request1Data = mockDataUtils.mockedRequestJsonDataMap
                 .get("mockIncomingRequest1JsonDataWith2T2N");

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,7 @@ import org.mskcc.smile.persistence.neo4j.SmileSampleRepository;
 import org.mskcc.smile.persistence.neo4j.TempoRepository;
 import org.mskcc.smile.service.util.RequestDataFactory;
 import org.mskcc.smile.service.util.SampleDataFactory;
+import org.neo4j.ogm.session.Session;
 import org.neo4j.ogm.session.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -92,6 +94,9 @@ public class SampleServiceTest {
         }
     }
 
+    @Autowired
+    private SessionFactory sessionFactory;
+
     private final SmileRequestRepository requestRepository;
     private final SmileSampleRepository sampleRepository;
     private final SmilePatientRepository patientRepository;
@@ -122,14 +127,20 @@ public class SampleServiceTest {
      * Persists the Mock Request data to the test database.
      * @throws Exception
      */
-    @Autowired
+    @BeforeEach
     public void initializeMockDatabase() throws Exception {
+        Session session = sessionFactory.openSession();
+        session.purgeDatabase();
+
         // mock request id: MOCKREQUEST1_B
         MockJsonTestData request1Data = mockDataUtils.mockedRequestJsonDataMap
                 .get("mockIncomingRequest1JsonDataWith2T2N");
         SmileRequest request1 =
                 RequestDataFactory.buildNewLimsRequestFromJson(request1Data.getJsonString());
-        requestService.saveRequest(request1);
+        if (requestService.getSmileRequestById(request1.getIgoRequestId()) == null) {
+            requestService.saveRequest(request1);
+        }
+
 
         // mock request id: 33344_Z
         MockJsonTestData request3Data = mockDataUtils.mockedRequestJsonDataMap
@@ -137,6 +148,9 @@ public class SampleServiceTest {
         SmileRequest request3 =
                 RequestDataFactory.buildNewLimsRequestFromJson(request3Data.getJsonString());
         requestService.saveRequest(request3);
+        if (requestService.getSmileRequestById(request3.getIgoRequestId()) == null) {
+            requestService.saveRequest(request1);
+        }
 
         // mock request id: 145145_IM
         MockJsonTestData request5Data = mockDataUtils.mockedRequestJsonDataMap
@@ -144,6 +158,9 @@ public class SampleServiceTest {
         SmileRequest request5 =
                 RequestDataFactory.buildNewLimsRequestFromJson(request5Data.getJsonString());
         requestService.saveRequest(request5);
+        if (requestService.getSmileRequestById(request5.getIgoRequestId()) == null) {
+            requestService.saveRequest(request1);
+        }
 
         //persist all mocked clinical data
         for (MockJsonTestData mockJsonTestData : mockDataUtils.mockedDmpMetadataMap.values()) {
@@ -153,7 +170,10 @@ public class SampleServiceTest {
                     mockDataUtils.getCmoPatientIdForDmpPatient(dmpSample.getDmpPatientId());
             SmileSample clinicalSample =
                     SampleDataFactory.buildNewClinicalSampleFromMetadata(cmoPatientId, dmpSample);
-            sampleService.saveSmileSample(clinicalSample);
+            if (!sampleService.sampleExistsByInputId(clinicalSample.getPrimarySampleAlias())) {
+                sampleService.saveSmileSample(clinicalSample);
+            }
+
         }
     }
 
@@ -406,15 +426,16 @@ public class SampleServiceTest {
      */
     @Test
     @Order(13)
-    public void testFindSampleByUuid() throws Exception {
+    public void testFindSampleByInvestigatorId() throws Exception {
         String igoId = "MOCKREQUEST1_B_2";
         String investigatorId = "01-0012345a";
 
         SmileSample sample = sampleService.getSampleByInputId(igoId);
-        SmileSample sampleByUuid = sampleService.getSampleByInputId(investigatorId);
+        SmileSample sampleByInvestigatorId = sampleService.getSampleByInputId(investigatorId);
 
         Assertions.assertNotNull(sample);
-        Assertions.assertEquals(sample, sampleByUuid);
+        Assertions.assertEquals(sample.getSmileSampleId(),
+                sampleByInvestigatorId.getSmileSampleId());
     }
 
     /**
@@ -496,7 +517,7 @@ public class SampleServiceTest {
         String requestId = "MOCKREQUEST1_B";
         SmileSample savedSample = sampleService.getResearchSampleByRequestAndIgoId(requestId, igoId);
         SampleMetadata latestSampleMetadata = savedSample.getLatestSampleMetadata();
-        Assertions.assertNotEquals(invalidCollectionYear, 
+        Assertions.assertNotEquals(invalidCollectionYear,
                 latestSampleMetadata.getCollectionYear());
     }
 
@@ -555,7 +576,7 @@ public class SampleServiceTest {
         Assertions.assertEquals(1, samplesAfterUpdate.size());
         List<SmileSample> samplesStillLinkedToOldPt =
                 sampleService.getSamplesByCmoPatientId(currentCmoPtId);
-        Assertions.assertEquals(samplesBeforeUpdateForCurrentPt.size() - 1, 
+        Assertions.assertEquals(samplesBeforeUpdateForCurrentPt.size() - 1,
                 samplesStillLinkedToOldPt.size());
 
     }

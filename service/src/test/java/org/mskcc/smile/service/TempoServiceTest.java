@@ -1,121 +1,139 @@
 package org.mskcc.smile.service;
 
-//import com.fasterxml.jackson.core.JsonProcessingException;
-//import com.fasterxml.jackson.databind.ObjectMapper;
-//import java.util.List;
-//import java.util.Map;
-//import java.util.Set;
-//import org.assertj.core.api.Assertions;
-//import org.junit.jupiter.api.Test;
-//import org.mskcc.smile.model.SmileRequest;
-//import org.mskcc.smile.model.SmileSample;
-//import org.mskcc.smile.model.tempo.BamComplete;
-//import org.mskcc.smile.model.tempo.Cohort;
-//import org.mskcc.smile.model.tempo.CohortComplete;
-//import org.mskcc.smile.model.tempo.MafComplete;
-//import org.mskcc.smile.model.tempo.QcComplete;
-//import org.mskcc.smile.model.tempo.Tempo;
-//import org.mskcc.smile.model.tempo.json.CohortCompleteJson;
-//import org.mskcc.smile.persistence.neo4j.SmilePatientRepository;
-//import org.mskcc.smile.persistence.neo4j.SmileRequestRepository;
-//import org.mskcc.smile.persistence.neo4j.SmileSampleRepository;
-//import org.mskcc.smile.persistence.neo4j.TempoRepository;
-//import org.mskcc.smile.service.util.RequestDataFactory;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.autoconfigure.data.neo4j.DataNeo4jTest;
-//import org.springframework.boot.test.context.TestConfiguration;
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Import;
-//import org.testcontainers.containers.Neo4jContainer;
-//import org.testcontainers.junit.jupiter.Container;
-//import org.testcontainers.junit.jupiter.Testcontainers;
+import org.mskcc.smile.model.SmileRequest;
+import org.mskcc.smile.persistence.neo4j.CohortCompleteRepository;
+import org.mskcc.smile.persistence.neo4j.SmilePatientRepository;
+import org.mskcc.smile.persistence.neo4j.SmileRequestRepository;
+import org.mskcc.smile.persistence.neo4j.SmileSampleRepository;
+import org.mskcc.smile.persistence.neo4j.TempoRepository;
+import org.mskcc.smile.service.util.RequestDataFactory;
+import org.neo4j.ogm.session.Session;
+import org.neo4j.ogm.session.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.Neo4jContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
 
-///**
-// *
-// * @author ochoaa
-// */
-//@Testcontainers
-//@DataNeo4jTest
-//@Import(MockDataUtils.class)
+/**
+ *
+ * @author ochoaa
+ */
+@SpringBootTest(
+        classes = SmileTestApp.class,
+        properties = {"spring.neo4j.authentication.username:neo4j"}
+)
+@Testcontainers
+@Import(MockDataUtils.class)
 public class TempoServiceTest {
-//    @Autowired
-//    private MockDataUtils mockDataUtils;
-//
-//    @Autowired
-//    private SmileRequestService requestService;
-//
-//    @Autowired
-//    private SmileSampleService sampleService;
-//
-//    @Autowired
-//    private SmilePatientService patientService;
-//
-//    @Autowired
-//    private CohortCompleteService cohortCompleteService;
-//
-//    @Autowired
-//    private TempoService tempoService;
-//
-//    private final ObjectMapper mapper = new ObjectMapper();
-//
-//    @Container
-//    private static final Neo4jContainer<?> databaseServer = new Neo4jContainer<>()
-//            .withEnv("NEO4J_dbms_security_procedures_unrestricted", "apoc.*,algo.*");
-//
-//    @TestConfiguration
-//    static class Config {
-//        @Bean
-//        public org.neo4j.ogm.config.Configuration configuration() {
-//            return new org.neo4j.ogm.config.Configuration.Builder()
-//                    .uri(databaseServer.getBoltUrl())
-//                    .credentials("neo4j", databaseServer.getAdminPassword())
-//                    .build();
-//        }
-//    }
-//
-//    private final SmileRequestRepository requestRepository;
-//    private final SmileSampleRepository sampleRepository;
-//    private final SmilePatientRepository patientRepository;
-//    private final TempoRepository tempoRepository;
-//
-//    /**
-//     * Initializes the Neo4j repositories.
-//     * @param requestRepository
-//     * @param sampleRepository
-//     * @param patientRepository
-//     * @param tempoRepository
-//     */
-//    @Autowired
-//    public TempoServiceTest(SmileRequestRepository requestRepository,
-//            SmileSampleRepository sampleRepository, SmilePatientRepository patientRepository,
-//            TempoRepository tempoRepository) {
-//        this.requestRepository = requestRepository;
-//        this.sampleRepository = sampleRepository;
-//        this.patientRepository = patientRepository;
-//        this.tempoRepository = tempoRepository;
-//    }
-//
-//    /**
-//     * Persists the Mock Request data to the test database.
-//     * @throws Exception
-//     */
-//    @Autowired
-//    public void initializeMockDatabase() throws Exception {
-//        // mock request id: MOCKREQUEST1_B
-//        MockJsonTestData request1Data = mockDataUtils.mockedRequestJsonDataMap
-//                .get("mockIncomingRequest1JsonDataWith2T2N");
-//        SmileRequest request1 =
-//                RequestDataFactory.buildNewLimsRequestFromJson(request1Data.getJsonString());
-//        requestService.saveRequest(request1);
-//
-//        // mock request id: 22022_BZ
-//        MockJsonTestData request2bData = mockDataUtils.mockedRequestJsonDataMap
-//                .get("mockIncomingRequest2bJsonDataMissing1N");
-//        SmileRequest request2b =
-//                RequestDataFactory.buildNewLimsRequestFromJson(request2bData.getJsonString());
-//        requestService.saveRequest(request2b);
-//    }
-//
+    @Autowired
+    private MockDataUtils mockDataUtils;
+
+    @Autowired
+    private SmileRequestService requestService;
+
+    @Autowired
+    private SmileSampleService sampleService;
+
+    @Autowired
+    private SmilePatientService patientService;
+
+    // required for all test classes
+    @Container
+    private static final Neo4jContainer<?> databaseServer = new Neo4jContainer<>(
+            DockerImageName.parse("neo4j:5.19.0"))
+            .withEnv("NEO4J_dbms_security_procedures_unrestricted", "apoc.*,algo.*");
+
+    @DynamicPropertySource
+    static void neo4jProperties(DynamicPropertyRegistry registry) {
+        databaseServer.start();
+        registry.add("spring.neo4j.authentication.password", databaseServer::getAdminPassword);
+        registry.add("spring.neo4j.uri", databaseServer::getBoltUrl);
+    }
+
+    @TestConfiguration
+    static class Config {
+        @Bean
+        public org.neo4j.ogm.config.Configuration configuration() {
+            return new org.neo4j.ogm.config.Configuration.Builder()
+                    .uri(databaseServer.getBoltUrl())
+                    .credentials("neo4j", databaseServer.getAdminPassword())
+                    .build();
+        }
+
+        @Bean
+        public SessionFactory sessionFactory() {
+            // with domain entity base package(s)
+            return new SessionFactory(configuration(), "org.mskcc.smile.persistence");
+        }
+    }
+
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    private final SmileRequestRepository requestRepository;
+    private final SmileSampleRepository sampleRepository;
+    private final SmilePatientRepository patientRepository;
+    private final TempoRepository tempoRepository;
+    private final CohortCompleteRepository cohortCompleteRepository;
+
+
+    /**
+     * Initializes the Neo4j repositories.
+     * @param requestRepository
+     * @param sampleRepository
+     * @param patientRepository
+     * @param tempoRepository
+     * @param cohortCompleteRepository
+     */
+    @Autowired
+    public TempoServiceTest(SmileRequestRepository requestRepository,
+            SmileSampleRepository sampleRepository, SmilePatientRepository patientRepository,
+            TempoRepository tempoRepository, CohortCompleteRepository cohortCompleteRepository) {
+        this.requestRepository = requestRepository;
+        this.sampleRepository = sampleRepository;
+        this.patientRepository = patientRepository;
+        this.tempoRepository = tempoRepository;
+        this.cohortCompleteRepository = cohortCompleteRepository;
+    }
+
+    /**
+     * Persists the Mock Request data to the test database.
+     * @throws Exception
+     */
+    @Autowired
+    public void initializeMockDatabase() throws Exception {
+        Session session = sessionFactory.openSession();
+        session.purgeDatabase();
+
+        // mock request id: MOCKREQUEST1_B
+        MockJsonTestData request1Data = mockDataUtils.mockedRequestJsonDataMap
+                .get("mockIncomingRequest1JsonDataWith2T2N");
+        SmileRequest request1 =
+                RequestDataFactory.buildNewLimsRequestFromJson(request1Data.getJsonString());
+        requestService.saveRequest(request1);
+
+        // mock request id: 33344_Z
+        MockJsonTestData request3Data = mockDataUtils.mockedRequestJsonDataMap
+                .get("mockIncomingRequest3JsonDataPooledNormals");
+        SmileRequest request3 =
+                RequestDataFactory.buildNewLimsRequestFromJson(request3Data.getJsonString());
+        requestService.saveRequest(request3);
+
+        // mock request id: 145145_IM
+        MockJsonTestData request5Data = mockDataUtils.mockedRequestJsonDataMap
+                .get("mockIncomingRequest5JsonPtMultiSamples");
+        SmileRequest request5 =
+                RequestDataFactory.buildNewLimsRequestFromJson(request5Data.getJsonString());
+        requestService.saveRequest(request5);
+    }
+
 //    @Test
 //    public void testBamCompleteEventSave() throws Exception {
 //        Tempo tempo1 = new Tempo();

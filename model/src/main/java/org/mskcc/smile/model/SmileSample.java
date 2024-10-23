@@ -183,7 +183,6 @@ public class SmileSample implements Serializable {
         latestSampleMetadata.setSampleName(sampleMetadata.getSampleName());
         latestSampleMetadata.setCmoInfoIgoId(sampleMetadata.getCmoInfoIgoId());
         latestSampleMetadata.setOncotreeCode(sampleMetadata.getOncotreeCode());
-        latestSampleMetadata.setCollectionYear(sampleMetadata.getCollectionYear());
         latestSampleMetadata.setTubeId(sampleMetadata.getTubeId());
         latestSampleMetadata.setSpecies(sampleMetadata.getSpecies());
         latestSampleMetadata.setSex(sampleMetadata.getSex());
