@@ -20,9 +20,15 @@ public interface SmilePatientRepository extends Neo4jRepository<SmilePatient, Lo
 
     @Query("MATCH (p: Patient)<-[:IS_ALIAS]-(pa: PatientAlias {value: $cmoPatientId, namespace: 'cmoId'}) "
             + "MATCH (p)<-[ipa:IS_ALIAS]-(pa2: PatientAlias) "
-            + " RETURN p, ipa, pa2")
+            + "RETURN p, ipa, pa2")
     SmilePatient findPatientByCmoPatientId(
             @Param("cmoPatientId") String cmoPatientId);
+
+    @Query("MATCH (p: Patient)<-[:IS_ALIAS]-(pa: PatientAlias {namespace: $namespace, value: $value}) "
+            + "MATCH (p)<-[ia2:IS_ALIAS]-(pa2: PatientAlias) "
+            + "RETURN p, ia2, pa2")
+    SmilePatient findPatientByNamespaceAndValue(@Param("namespace") String namespace,
+            @Param("value") String value);
 
     @Query("MATCH (p: Patient)<-[:IS_ALIAS]-(pa: PatientAlias {value: $oldCmoId, namespace: 'cmoId'}) "
             + "SET pa.value = $newCmoId WITH p "

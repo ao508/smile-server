@@ -7,6 +7,7 @@ public interface SmilePatientService {
     SmilePatient getPatientBySampleSmileId(UUID smileSampleId);
     SmilePatient savePatientMetadata(SmilePatient patient);
     SmilePatient getPatientByCmoPatientId(String cmoPatientId);
+    SmilePatient getPatientByNamespaceAndValue(String namespace, String value);
     SmilePatient updateCmoPatientId(String oldCmoPatientId, String newCmoPatientId);
     void deletePatient(SmilePatient patient);
 }

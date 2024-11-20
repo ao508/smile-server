@@ -28,6 +28,11 @@ public class PatientServiceImpl implements SmilePatientService {
     }
 
     @Override
+    public SmilePatient getPatientByNamespaceAndValue(String namespace, String value) {
+        return patientRepository.findPatientByNamespaceAndValue(namespace, value);
+    }
+
+    @Override
     @Transactional(rollbackFor = {Exception.class})
     public SmilePatient updateCmoPatientId(String oldCmoPatientId, String newCmoPatientId) {
         if (getPatientByCmoPatientId(oldCmoPatientId) == null) {
