@@ -450,10 +450,10 @@ public class SmileRequest implements Serializable {
      * @return String
      */
     public String resolveGenePanel(Map<String, Object> metadataMap) {
-        Object genePanel_ = (metadataMap.containsKey("recipe"))
+        Object gp = (metadataMap.containsKey("recipe"))
                 ? metadataMap.get("recipe") : metadataMap.get("genePanel");
-        if (genePanel_ != null) {
-            return String.valueOf(genePanel_);
+        if (gp != null) {
+            return String.valueOf(gp);
         }
         return null;
     }
