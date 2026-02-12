@@ -2,6 +2,7 @@ package org.mskcc.smile.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -438,16 +439,12 @@ public class SampleServiceImpl implements SmileSampleService {
             throw new RuntimeException("Start date " + importDate + " cannot be null or empty");
         }
         // return latest sample metadata for each sample uuid returned
-        List<UUID> sampleIds = sampleRepository.findSamplesByLatestImportDate(importDate);
+        // import date current yyyy-MM-dd which will become Long (parse in sampleRepository cypher)
+        List<Object> sampleIds = sampleRepository.findSamplesByLatestImportDate(importDate);
         if (sampleIds == null) {
             return null;
         }
-        List<SmileSampleIdMapping> sampleIdsList = new ArrayList<>();
-        for (UUID smileSampleId : sampleIds) {
-            SampleMetadata sm = sampleRepository.findLatestSampleMetadataBySmileId(smileSampleId);
-            sampleIdsList.add(new SmileSampleIdMapping(smileSampleId, sm));
-        }
-        return sampleIdsList;
+        return Arrays.asList(mapper.convertValue(sampleIds, SmileSampleIdMapping[].class));
     }
 
     @Override
