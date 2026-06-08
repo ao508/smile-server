@@ -82,7 +82,7 @@ public class AwsS3ServiceImpl implements AwsS3Service {
 
     private Boolean pushObjectToS3Bucket(S3Client s3Client, TempoSample sample)
             throws JsonProcessingException, InvalidProtocolBufferException {
-        String bucketKey = sample.getDmpSampleId() + "_clinical.json";
+        String bucketKey = "clinical/" + sample.getDmpSampleId() + "_clinical.json";
         PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                 .bucket(s3TempoBucket)
                 .key(bucketKey)
