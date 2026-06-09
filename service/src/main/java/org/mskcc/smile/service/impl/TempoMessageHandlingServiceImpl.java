@@ -633,6 +633,16 @@ public class TempoMessageHandlingServiceImpl implements TempoMessageHandlingServ
             TempoSampleUpdateMessage tempoSampleUpdateMessage = TempoSampleUpdateMessage.newBuilder()
                 .addAllTempoSamples(validTempoSamples)
                 .build();
+            if (validTempoSamples.size() != tempoSampleUpdateMessage.getTempoSamplesCount()) {
+                LOG.error("The validTempoSamples size does not match the sample size in "
+                        + "the TEMPO sample update message: " + validTempoSamples.size() 
+                        + " != " + tempoSampleUpdateMessage.getTempoSamplesCount());
+                System.out.println("\nvalidTempoSamples:\n");
+                System.out.println(validTempoSamples);
+                System.out.println("\ntempoSampleUpdateMessage:\n");
+                System.out.println(tempoSampleUpdateMessage.getTempoSamplesList());
+                System.out.println("\n");
+            }
             return tempoSampleUpdateMessage;
         } else {
             LOG.warn("No valid TEMPO samples to upload to AWS s3 bucket for cBioPortal");
